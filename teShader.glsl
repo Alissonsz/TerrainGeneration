@@ -1,5 +1,5 @@
 #version 430 core
-#extension GL_EXT_gpu_shader4 : enable
+//#extension GL_EXT_gpu_shader4 : enable
 #define F3 0.333333333
 #define G3 0.166666667
 
@@ -12,29 +12,29 @@ uniform mat4 projection;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
-in VS_OUT
+in TC_OUT
 {
     vec3 FragPos;
-    vec3 TexCoords;
-//    vec3 TangentLightPos;
-//    vec3 TangentViewPos;
-//    vec3 TangentFragPos;
+    vec2 TexCoords;
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
 } te_in[];
 
-out tcNormal[];
-out tcBitang[];
-out tcTang[];
-out tcPosition[];
+out vec3 tcNormal[];
+out vec3 tcBitang[];
+out vec3 tcTang[];
+out vec3 tcPosition[];
 
-out tePosition;
-out teNormal;
-out teBitang;
-out teTang;
+out vec3 tePosition;
+out vec3 teNormal;
+out vec3 teBitang;
+out vec3 teTang;
 
-out TS_OUT
+out TE_OUT
 {
     vec3 FragPos;
-    vec3 TexCoords;
+    vec2 TexCoords;
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
@@ -103,7 +103,7 @@ void main(){
                     + gl_TessCoord[1] * te_in[1].FragPos
 	           	      + gl_TessCoord[2] * te_in[2].FragPos;
 
-	  te_out.TexCoords = gl_TessCoord[0] * te_in[0].TexCoords
+	te_out.TexCoords = gl_TessCoord[0] * te_in[0].TexCoords
 	           	    + gl_TessCoord[1] * te_in[1].TexCoords
 	                + gl_TessCoord[2] * te_in[2].TexCoords;
 
@@ -111,7 +111,7 @@ void main(){
 
     te_out.TangentLightPos = TBN * lightPos;
     te_out.TangentViewPos  = TBN * viewPos;
-    te_out.TangentFragPos  = TBN * vs_out.FragPos;
+    te_out.TangentFragPos  = TBN * te_out.FragPos;
 
     gl_Position = projection * view * model * vec4(tePosition, 1.0);
 }

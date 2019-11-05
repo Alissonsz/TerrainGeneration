@@ -13,13 +13,20 @@ uniform int binaryIter = 5;
 in vec3 Normal;
 in vec3 FragPos;*/
 
-in TS_OUT {
+in TE_OUT {
     vec3 FragPos;
     vec2 TexCoords;
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
 } te_out;
+/*in VS_OUT {
+    vec3 FragPos;
+    vec2 TexCoords;
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
+} te_out;*/
 
 vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
     vec2 P = viewDir.xy * 0.3;

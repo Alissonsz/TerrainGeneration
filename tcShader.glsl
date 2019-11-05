@@ -5,28 +5,28 @@ layout(vertices = 3) out;
 in VS_OUT {
     vec3 FragPos;
     vec2 TexCoords;
-//    vec3 TangentLightPos;
-//    vec3 TangentViewPos;
-//    vec3 TangentFragPos;
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
 } tc_in[];
 
-in vPosition[];
-in vTang[];
-in vBitang[];
-in vNormal[];
+in vec3 vPosition[];
+in vec3 vTang[];
+in vec3 vBitang[];
+in vec3 vNormal[];
 
-out tcNormal[];
-out tcBitang[];
-out tcTang[];
-out tcPosition[];
+out vec3 tcNormal[];
+out vec3 tcBitang[];
+out vec3 tcTang[];
+out vec3 tcPosition[];
 
-out VS_OUT
+out TC_OUT
 {
     vec3 FragPos;
-    vec3 TexCoords;
-//    vec3 TangentLightPos;
-//    vec3 TangentViewPos;
-//    vec3 TangentFragPos;
+    vec2 TexCoords;
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
 } tc_out[];
 
 uniform vec3 viewPos;

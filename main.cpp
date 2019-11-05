@@ -30,7 +30,7 @@ SDL_GLContext maincontext;
 float deltatime = 0.0f;
 float lastframe = 0.0f;
 bool running = true;
-glm::vec3 lightPos(0.0f, 10.0f, 0.0f);
+glm::vec3 lightPos(10.0f, 10.0f, 10.0f);
 Camera camera(glm::vec3(0.0, 20.0f, 30.0f));
 bool wireframe = false;
 int lastx = 1366/2, lasty = 768/2;
@@ -60,6 +60,7 @@ int MapInRange(T x, I in_min, I in_max, O out_min, O out_max)
 bool sucessoo = Init();
 //Shader ourShader("shader.vs", "shader.fs");
 Shader ourTessShader("vertexShader.glsl", "tcShader.glsl", "teShader.glsl", "fragShader.glsl");
+//Shader ourTessShader("vertexShader.glsl", "fragShader.glsl");
 Shader our2Shader("shader2.vs", "shader2.fs");
 
 bool Init(){
@@ -81,7 +82,7 @@ bool Init(){
 
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -102,6 +103,29 @@ bool Init(){
 
 	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 	return true;
+}
+
+double getEntropy(int topLeftX, int topLeftY, int width, const int offset, const char* heightMap){
+    std::vector<float> probs(256, 0);
+
+    for(int i = topLeftY; i < topLeftY + offset; i++){
+        for(int j = topLeftX; j < topLeftX + offset; j++){
+            int curIndex = ((i * (width-1) + j) * 3);
+            probs[heightMap[curIndex]]++;
+        }
+    }
+    float entropy = 0;
+    float entropySum = 0;
+    int setSize = (offset * offset);
+    for(int i = 0; i < 256; i++){
+        if(probs[i] == 0) continue;
+        entropySum += ((float(probs[i]/setSize)) * log2(float(probs[i]/setSize)));
+        std::cout << entropySum << std::endl;
+    }
+    entropy = entropySum * -1;
+
+    return entropy;
+    
 }
 
 void InputProcess(SDL_Event event){
