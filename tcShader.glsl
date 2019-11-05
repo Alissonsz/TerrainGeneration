@@ -20,7 +20,7 @@ out vec3 tcBitang[];
 out vec3 tcTang[];
 out vec3 tcPosition[];
 
-out TC_OUT
+out VS_OUT
 {
     vec3 FragPos;
     vec2 TexCoords;
@@ -80,7 +80,7 @@ void main(){
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 
-  if (ID == 0) {
+//  if (ID == 0) {
 //    vec3 v0 = gl_in[0].gl_Position.xyz;
 //    vec3 v1 = gl_in[1].gl_Position.xyz;
 //    vec3 v2 = gl_in[2].gl_Position.xyz;
@@ -109,7 +109,7 @@ void main(){
     gl_TessLevelOuter[0] = 2;
     gl_TessLevelOuter[1] = 2;
     gl_TessLevelOuter[2] = 2;
-  }
+  //}
   //if(TessLevelInner == 8.0 /*|| TessLevelOuter == 8.0*/){
     //tcColor[ID] == vec4(1.0, 1.0, 1.0, 1.0);
   //}

@@ -16,7 +16,7 @@ out VS_OUT {
     vec3 TangentFragPos;
 } vs_out;
 
-out vec3 vPos;
+out vec3 vPosition;
 out vec3 vTang;
 out vec3 vBitang;
 out vec3 vNormal;
@@ -52,26 +52,18 @@ void main(){
 
     texCord = vec2(texX, texY);*/
 
+    vPosition = aPos;
     vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
     vs_out.TexCoords = aTexCoords;
 
     vTang = normalize(mat3(model) * aTangent);
     vBitang = normalize(mat3(model) * aBitangent);
     vNormal = normalize(mat3(model) * aNormal);
-    /*mat3 TBN = transpose(mat3(T, B, N));
-
-    vs_out.TangentLightPos = TBN * lightPos;
-    vs_out.TangentViewPos  = TBN * viewPos;
-    vs_out.TangentFragPos  = TBN * vs_out.FragPos;*/
-
-    /*vec3 T = normalize(mat3(model) * aTangent);
-    vec3 B = normalize(mat3(model) * aBitangent);
-    vec3 N = normalize(mat3(model) * aNormal);
-    mat3 TBN = transpose(mat3(T, B, N));
+    mat3 TBN = transpose(mat3(vTang, vBitang, vNormal));
 
     vs_out.TangentLightPos = TBN * lightPos;
     vs_out.TangentViewPos  = TBN * viewPos;
     vs_out.TangentFragPos  = TBN * vs_out.FragPos;
-    
-    gl_Position = projection * view * model * vec4(aPos, 1.0);*/
+//
+    gl_Position = vec4(aPos, 1.0);
 }

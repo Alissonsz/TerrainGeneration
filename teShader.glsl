@@ -1,7 +1,4 @@
 #version 430 core
-//#extension GL_EXT_gpu_shader4 : enable
-#define F3 0.333333333
-#define G3 0.166666667
 
 layout(triangles, equal_spacing, ccw) in;
 
@@ -12,7 +9,7 @@ uniform mat4 projection;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
-in TC_OUT
+in VS_OUT
 {
     vec3 FragPos;
     vec2 TexCoords;
@@ -31,7 +28,7 @@ out vec3 teNormal;
 out vec3 teBitang;
 out vec3 teTang;
 
-out TE_OUT
+out VS_OUT
 {
     vec3 FragPos;
     vec2 TexCoords;
@@ -40,39 +37,6 @@ out TE_OUT
     vec3 TangentFragPos;
 } te_out;
 
-float hash(float n) { return fract(sin(n) * 1e4); }
-float hash(vec2 p) { return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x)))); }
-
-float noise(vec3 x) {
-	const vec3 step = vec3(110, 241, 171);
-
-	vec3 i = floor(x);
-	vec3 f = fract(x);
-
-	// For performance, compute the base input to a 1D hash from the integer part of the argument and the
-	// incremental change to the 1D based on the 3D -> 1D wrapping
-    float n = dot(i, step);
-
-	vec3 u = f * f * (3.0 - 2.0 * f);
-	return mix(mix(mix( hash(n + dot(step, vec3(0, 0, 0))), hash(n + dot(step, vec3(1, 0, 0))), u.x),
-                   mix( hash(n + dot(step, vec3(0, 1, 0))), hash(n + dot(step, vec3(1, 1, 0))), u.x), u.y),
-               mix(mix( hash(n + dot(step, vec3(0, 0, 1))), hash(n + dot(step, vec3(1, 0, 1))), u.x),
-                   mix( hash(n + dot(step, vec3(0, 1, 1))), hash(n + dot(step, vec3(1, 1, 1))), u.x), u.y), u.z);
-}
-
-const mat3 m3  = mat3( 0.00,  0.80,  0.60,
-                      -0.80,  0.36, -0.48,
-                      -0.60, -0.48,  0.64 );
-
-float fbm( vec3 p ){
-    float f = 0.0;
-    f += 0.5000*noise( p ); p = m3*p*2.02;
-    f += 0.2500*noise( p ); p = m3*p*2.03;
-    f += 0.1250*noise( p ); p = m3*p*2.01;
-    f += 0.0625*noise( p );
-
-    return f/0.9375;
-}
 
 void main(){
     vec3 tcPos0 = (tcPosition[0]);
@@ -101,17 +65,29 @@ void main(){
 
     te_out.FragPos =  gl_TessCoord[0] * te_in[0].FragPos
                     + gl_TessCoord[1] * te_in[1].FragPos
-	           	      + gl_TessCoord[2] * te_in[2].FragPos;
+	           	    + gl_TessCoord[2] * te_in[2].FragPos;
 
-	te_out.TexCoords = gl_TessCoord[0] * te_in[0].TexCoords
-	           	    + gl_TessCoord[1] * te_in[1].TexCoords
-	                + gl_TessCoord[2] * te_in[2].TexCoords;
+	te_out.TexCoords  = gl_TessCoord[0] * te_in[0].TexCoords
+                      + gl_TessCoord[1] * te_in[1].TexCoords
+	                  + gl_TessCoord[2] * te_in[2].TexCoords;
 
+    te_out.TangentLightPos =  gl_TessCoord[0] * te_in[0].TangentLightPos
+                            + gl_TessCoord[1] * te_in[1].TangentLightPos
+	           	            + gl_TessCoord[2] * te_in[2].TangentLightPos;
+
+    te_out.TangentViewPos   = gl_TessCoord[0] * te_in[0].TangentViewPos
+                            + gl_TessCoord[1] * te_in[1].TangentViewPos
+	           	            + gl_TessCoord[2] * te_in[2].TangentViewPos;
+
+    te_out.TangentFragPos   =  gl_TessCoord[0] * te_in[0].TangentFragPos
+                            + gl_TessCoord[1] * te_in[1].TangentFragPos
+	           	            + gl_TessCoord[2] * te_in[2].TangentFragPos;
+/*
     mat3 TBN = transpose(mat3(teTang, teBitang, teNormal));
 
     te_out.TangentLightPos = TBN * lightPos;
     te_out.TangentViewPos  = TBN * viewPos;
-    te_out.TangentFragPos  = TBN * te_out.FragPos;
+    te_out.TangentFragPos  = TBN * te_out.FragPos;*/
 
     gl_Position = projection * view * model * vec4(tePosition, 1.0);
 }
