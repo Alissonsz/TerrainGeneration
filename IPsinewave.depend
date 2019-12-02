@@ -1,0 +1,515 @@
+# depslib dependency file v1.0
+1538629632 source:c:\users\iagop\documents\pesquisa2018\controls.cpp
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<iostream>
+	"controls.hpp"
+
+1537460221 c:\users\iagop\documents\pesquisa2018\controls.hpp
+
+1545155931 source:c:\users\iagop\documents\pesquisa2018\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1545155867 c:\users\iagop\documents\pesquisa2018\loadshaders.hpp
+
+1545164516 source:c:\users\iagop\documents\pesquisa2018\main.cpp
+	<vector>
+	<iostream>
+	<string>
+	"filesystem.h"
+	"vectormath/vectormath.h"
+	<cstdlib>
+	<GL/glew.h>
+	<SOIL/stb_image.h>
+	<SOIL/SOIL.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	"LoadShaders.hpp"
+	"controls.hpp"
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\vectormath.h
+	"vectormath_aos_v.h"
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\vectormath_aos_v.h
+	<math.h>
+	<stdio.h>
+	"vectormath_aos.h"
+	"vec_aos_v.h"
+	"quat_aos_v.h"
+	"mat_aos_v.h"
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\vectormath_aos.h
+	<math.h>
+	<stdio.h>
+	"vec_aos.h"
+	"quat_aos.h"
+	"mat_aos.h"
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\vec_aos.h
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\quat_aos.h
+
+1537460221 c:\users\iagop\documents\pesquisa2018\vectormath\mat_aos.h
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\vec_aos_v.h
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\quat_aos_v.h
+
+1537460222 c:\users\iagop\documents\pesquisa2018\vectormath\mat_aos_v.h
+
+1545154153 c:\users\iagop\documents\pesquisa2018\filesystem.h
+	<string>
+	<cstdlib>
+	"LastOrder\root_directory.h"
+
+1545154046 c:\users\iagop\documents\pesquisa2018\lastorder\root_directory.h
+	"entry.h"
+	<iostream>
+	<vector>
+	<string>
+	<ctime>
+
+1545154046 c:\users\iagop\documents\pesquisa2018\lastorder\entry.h
+	<iostream>
+	<ctime>
+
+1545154282 c:\users\iagop\documents\pesquisa2018\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1545767570 source:c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\controls.cpp
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<iostream>
+	"controls.hpp"
+
+1545767570 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\controls.hpp
+
+1545767594 source:c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1545767594 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\loadshaders.hpp
+
+1550535669 source:c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\main.cpp
+	<vector>
+	<iostream>
+	<string>
+	"filesystem.h"
+	"vectormath/vectormath.h"
+	<cstdlib>
+	<GL/glew.h>
+	"stb_image.h"
+	"SOIL.h"
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	"LoadShaders.hpp"
+	"controls.hpp"
+
+1545767570 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\filesystem.h
+	<string>
+	<cstdlib>
+	"LastOrder\root_directory.h"
+
+1545767604 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\lastorder\root_directory.h
+	"entry.h"
+	<iostream>
+	<vector>
+	<string>
+	<ctime>
+
+1545767602 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\lastorder\entry.h
+	<iostream>
+	<ctime>
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\vectormath.h
+	"vectormath_aos_v.h"
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\vectormath_aos_v.h
+	<math.h>
+	<stdio.h>
+	"vectormath_aos.h"
+	"vec_aos_v.h"
+	"quat_aos_v.h"
+	"mat_aos_v.h"
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\vectormath_aos.h
+	<math.h>
+	<stdio.h>
+	"vec_aos.h"
+	"quat_aos.h"
+	"mat_aos.h"
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\vec_aos.h
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\quat_aos.h
+
+1545767608 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\mat_aos.h
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\vec_aos_v.h
+
+1545767610 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\quat_aos_v.h
+
+1545767608 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\vectormath\mat_aos_v.h
+
+1215465208 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\src\soil.h
+
+1215465208 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\src\stb_image_aug.h
+	<stdio.h>
+
+1548182289 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1215465208 c:\users\iago.labcg-pc\documents\pesquisa2019\pesquisa2018-20190122t175133z-001\pesquisa2018\soil.h
+
+1554481585 source:c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\controls.cpp
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<iostream>
+	"controls.hpp"
+
+1554481480 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\controls.hpp
+
+1574806965 source:c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1574728017 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\loadshaders.hpp
+
+1575307887 source:c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\main.cpp
+	"Util.hpp"
+	"camera.h"
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\vectormath.h
+	"vectormath_aos_v.h"
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\vectormath_aos_v.h
+	<math.h>
+	<stdio.h>
+	"vectormath_aos.h"
+	"vec_aos_v.h"
+	"quat_aos_v.h"
+	"mat_aos_v.h"
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\vectormath_aos.h
+	<math.h>
+	<stdio.h>
+	"vec_aos.h"
+	"quat_aos.h"
+	"mat_aos.h"
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\vec_aos.h
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\quat_aos.h
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\mat_aos.h
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\vec_aos_v.h
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\quat_aos_v.h
+
+1550550805 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\vectormath\mat_aos_v.h
+
+1562820698 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1562820697 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\soil.h
+
+1554491233 source:c:\users\iago.labcg-pc\documents\ufba2018\controls.cpp
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<iostream>
+	"controls.hpp"
+
+1554489915 c:\users\iago.labcg-pc\documents\ufba2018\controls.hpp
+
+1574637166 source:c:\users\iago.labcg-pc\documents\ufba2018\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1574637053 c:\users\iago.labcg-pc\documents\ufba2018\loadshaders.hpp
+
+1574638020 source:c:\users\iago.labcg-pc\documents\ufba2018\main.cpp
+	"Util.hpp"
+	"camera.h"
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\vectormath.h
+	"vectormath_aos_v.h"
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\vectormath_aos_v.h
+	<math.h>
+	<stdio.h>
+	"vectormath_aos.h"
+	"vec_aos_v.h"
+	"quat_aos_v.h"
+	"mat_aos_v.h"
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\vectormath_aos.h
+	<math.h>
+	<stdio.h>
+	"vec_aos.h"
+	"quat_aos.h"
+	"mat_aos.h"
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\vec_aos.h
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\quat_aos.h
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\mat_aos.h
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\vec_aos_v.h
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\quat_aos_v.h
+
+1550704562 c:\users\iago.labcg-pc\documents\ufba2018\vectormath\mat_aos_v.h
+
+1565803220 c:\users\iago.labcg-pc\documents\ufba2018\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1565803217 c:\users\iago.labcg-pc\documents\ufba2018\soil.h
+
+1574804617 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\simplex.h
+	<functional>
+	<array>
+	<random>
+	<math.h>
+	<stdlib.h>
+	<glm/geometric.hpp>
+	<glm/vec2.hpp>
+	<glm/vec3.hpp>
+	<glm/vec4.hpp>
+	<glm/mat2x2.hpp>
+
+1554967672 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\main.hpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<typeinfo>
+	<cmath>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	"stb_image.h"
+	"SOIL.h"
+	"simplex.h"
+	"LoadShaders.hpp"
+	"vectormath/vectormath.h"
+
+1556213051 c:\users\iago.labcg-pc\documents\ufba2018\main.hpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<typeinfo>
+	<cmath>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	"stb_image.h"
+	"SOIL.h"
+	"simplex.h"
+	"LoadShaders.hpp"
+	"vectormath/vectormath.h"
+
+1565803220 c:\users\iago.labcg-pc\documents\ufba2018\simplex.h
+	<functional>
+	<array>
+	<random>
+	<math.h>
+	<stdlib.h>
+	<glm/geometric.hpp>
+	<glm/vec2.hpp>
+	<glm/vec3.hpp>
+	<glm/vec4.hpp>
+	<glm/mat2x2.hpp>
+
+1575313375 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\camera.h
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<vector>
+
+1572473588 c:\users\iago.labcg-pc\documents\ufba2018\camera.h
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<vector>
+
+1575314106 c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\util.hpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<typeinfo>
+	<cmath>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<SOIL/stb_image_aug.h>
+	<SOIL/SOIL.h>
+	"simplex.h"
+	"LoadShaders.hpp"
+
+1565803232 c:\users\iago.labcg-pc\documents\ufba2018\util.hpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<typeinfo>
+	<cmath>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	"stb_image.h"
+	"SOIL.h"
+	"simplex.h"
+	"LoadShaders.hpp"
+
+1575297946 source:c:\users\iagop\documents\pesquisa2018-20190123t160530z-001\ufba2018\terrain.cpp
+
+1575315679 source:c:\users\iagop\documents\terraingeneration\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1575315679 c:\users\iagop\documents\terraingeneration\loadshaders.hpp
+
+1575315679 source:c:\users\iagop\documents\terraingeneration\main.cpp
+	"Util.hpp"
+	"camera.h"
+
+1575315679 c:\users\iagop\documents\terraingeneration\util.hpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<typeinfo>
+	<cmath>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<SOIL/stb_image_aug.h>
+	<SOIL/SOIL.h>
+	"simplex.h"
+	"LoadShaders.hpp"
+
+1575315679 c:\users\iagop\documents\terraingeneration\simplex.h
+	<functional>
+	<array>
+	<random>
+	<math.h>
+	<stdlib.h>
+	<glm/geometric.hpp>
+	<glm/vec2.hpp>
+	<glm/vec3.hpp>
+	<glm/vec4.hpp>
+	<glm/mat2x2.hpp>
+
+1575315679 c:\users\iagop\documents\terraingeneration\camera.h
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<vector>
+
+1575315679 source:c:\users\iagop\documents\terraingeneration\terrain.cpp
+
