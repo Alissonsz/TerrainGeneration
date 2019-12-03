@@ -49,7 +49,7 @@ public:
     float Zoom;
 
     // Constructor with vectors
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, 0.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
         Position = position;
         WorldUp = up;
@@ -201,7 +201,7 @@ public:
             clearVectors();
             createVerticesIndexes();
             bindBuffer();
-            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vértices = "<<vertices.size()<<" e quantidade dos índices"<<indices.size()<<endl;
+            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vï¿½rtices = "<<vertices.size()<<" e quantidade dos ï¿½ndices"<<indices.size()<<endl;
         }
         plusIsPressed = plusIsCurrentlyPressed;
 
@@ -216,7 +216,7 @@ public:
             clearVectors();
             createVerticesIndexes();
             bindBuffer();
-            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vértices = "<<vertices.size()<<" e quantidade dos índices"<<indices.size()<<endl;
+            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vï¿½rtices = "<<vertices.size()<<" e quantidade dos ï¿½ndices"<<indices.size()<<endl;
         }
         minusIsPressed = minusIsCurrentlyPressed;
 
@@ -227,7 +227,7 @@ public:
             clearVectors();
             createVerticesIndexes();
             bindBuffer();
-            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vértices = "<<vertices.size()<<" e quantidade dos índices"<<indices.size()<<endl;
+            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vï¿½rtices = "<<vertices.size()<<" e quantidade dos ï¿½ndices"<<indices.size()<<endl;
         }
         shiftPlusIsPressed = shiftPlusIsCurrentlyPressed;
 
@@ -244,7 +244,7 @@ public:
             clearVectors();
             createVerticesIndexes();
             bindBuffer();
-            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vértices = "<<vertices.size()<<" e quantidade dos índices"<<indices.size()<<endl;
+            cout<<"indexSize = "<<indexSize<<" e tamanho da malha = "<<meshSize<<endl<<"Quantidades dos vï¿½rtices = "<<vertices.size()<<" e quantidade dos ï¿½ndices"<<indices.size()<<endl;
         }
         shiftMinusIsPressed = shiftMinusIsCurrentlyPressed;
 

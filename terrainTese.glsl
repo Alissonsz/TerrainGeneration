@@ -72,29 +72,30 @@ float ridgedNoise(in vec3 p, int octaves, float H, float gain, float amplitude, 
 }
 
 void main(){
-    vec3 p0 = gl_TessCoord.x * tcPosition[0];
-    vec3 p1 = gl_TessCoord.y * tcPosition[1];
-    vec3 p2 = gl_TessCoord.z * tcPosition[2];
-    f00Position = (p0 + p1 + p2);
+  vec3 p0 = gl_TessCoord.x * tcPosition[0];
+  vec3 p1 = gl_TessCoord.y * tcPosition[1];
+  vec3 p2 = gl_TessCoord.z * tcPosition[2];
+  f00Position = (p0 + p1 + p2);
 
-    vec3 edge01 = tcPosition[1]-tcPosition[0];
-    vec3 edge02 = tcPosition[2]-tcPosition[0];
+  vec3 edge01 = tcPosition[1]-tcPosition[0];
+  vec3 edge02 = tcPosition[2]-tcPosition[0];
 
 
-    vec4 c0 = gl_TessCoord.x * tcColor[0];
-    vec4 c1 = gl_TessCoord.y * tcColor[1];
-    vec4 c2 = gl_TessCoord.z * tcColor[2];
-    f00Color = (c0 + c1 + c2);
+  vec4 c0 = gl_TessCoord.x * tcColor[0];
+  vec4 c1 = gl_TessCoord.y * tcColor[1];
+  vec4 c2 = gl_TessCoord.z * tcColor[2];
+  f00Color = (c0 + c1 + c2);
 
-    vec2 t0 = gl_TessCoord.x * tcTexCoord[0];
-    vec2 t1 = gl_TessCoord.y * tcTexCoord[1];
-    vec2 t2 = gl_TessCoord.z * tcTexCoord[2];
-    f00TexCoord = (t0 + t1 + t2);
+  vec2 t0 = gl_TessCoord.x * tcTexCoord[0];
+  vec2 t1 = gl_TessCoord.y * tcTexCoord[1];
+  vec2 t2 = gl_TessCoord.z * tcTexCoord[2];
+  f00TexCoord = (t0 + t1 + t2);
 
-    vec4 heightNormal = texture(texture1, f00TexCoord);
+  vec4 heightNormal = texture(texture1, f00TexCoord);
+  
+  f00Position.y += fbm(f00Position.xyz*0.1) ;
+  
+  //f00Position.y = heightNormal.r*6;
 
-    f00Position.y += fbm(f00Position.xyz*0.1) ;
-    //f00Position.y = heightNormal.r;
-
-    gl_Position =  vec4(f00Position, 1.0);
+  gl_Position =  vec4(f00Position, 1.0);
 }

@@ -7,6 +7,13 @@ layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoords;
+layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec3 aBitangent;
+
+
 out vec3 vPosition;
 out vec4 vColor;
 out vec2 vTexCoord;
@@ -68,8 +75,10 @@ float ridgedNoise(in vec3 p, int octaves, float H, float gain, float amplitude, 
 
 
 void main(){
-  vTexCoord    = vec2(aTexCoord.x, aTexCoord.y)/10;
-  vPosition   = position - vec3(0,12,0);
+  //vec3 position = aPos;
+  //vec2 aTexCoord = aTexCoords;
+  vTexCoord    = vec2(aTexCoord.x, aTexCoord.y);
+  vPosition   = position;
   vNoise = 0.f;
   int i = 1;
 //  for(i; i < 6; i++)

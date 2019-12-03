@@ -145,7 +145,7 @@ void main(){
     //normal2 = normalize(cross(upNormal,normal2));
     //normal2 = normalize(cross(normal2,calcNormal(fPosition,fPosition.y)));
 //    normal2 = normalize(cross(normal2,fNormal));
-
+    if(fTexCoord.x > 1.0 || fTexCoord.y > 1.0 || fTexCoord.x < 0.0 || fTexCoord.y < 0.0) discard;
     float ambientStrength = 1;
     vec3 ambient = ambientStrength * lightColor;
 
@@ -166,47 +166,47 @@ void main(){
     vec4 col;
     vec3 tmp;
     if(frag%2 == 0){
-      bool parFlag = true;
-      vec3 newPos;
-      vec3 newNormal;
+        bool parFlag = true;
+        vec3 newPos;
+        vec3 newNormal;
 
-      vec2 texCoords = fTexCoord;
+        vec2 texCoords = fTexCoord;
 
-      vec3 viewDir = normalize(tangentViewPos - tangentFragPos);
-      if(texCoords.x < 0.0 || texCoords.y < 0.0) discard;
-      else if(parFlag)
-          texCoords = parallaxMapping(fTexCoord, viewDir);
-      else if(!parFlag)
-          texCoords = parallaxBinarySearch(fTexCoord, viewDir);
-      //if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
-     //    discard;
-
-
-      newNormal = fNormal;//texture(texture1, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
-      newNormal = normalize(newNormal);
-
-      vec3 norm = newNormal;
-      vec3 lightColor = texture(texture2, vec2(texCoords)).rgb;
-
-      vec3 lightDir = normalize(tangentLightPos - tangentFragPos);
-      float diff = max(dot(norm, -lightDir), 0.0);
-      vec3 diffuse = diff * lightColor;
-
-      float specularStrength = 0.8;
-
-      vec3 reflectDir = reflect(-lightDir, norm);
-      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-      vec3 specular = specularStrength * spec * lightColor;
+        vec3 viewDir = normalize(tangentViewPos - tangentFragPos);
+        if(texCoords.x < 0.0 || texCoords.y < 0.0) discard;
+        else if(parFlag)
+            texCoords = parallaxMapping(fTexCoord, viewDir);
+        else if(!parFlag)
+            texCoords = parallaxBinarySearch(fTexCoord, viewDir);
+        /*if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+            discard;*/
 
 
-      float ambientStrength = 0.05;
-      vec3 ambient = ambientStrength * lightColor;
+        newNormal = fNormal;//texture(texture1, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
+        newNormal = normalize(newNormal);
 
-      vec4 result = vec4(ambient + diffuse + specular, 1.0);
-      col = result;
+        vec3 norm = newNormal;
+        vec3 lightColor = texture(texture2, vec2(texCoords)).rgb;
+
+        vec3 lightDir = normalize(tangentLightPos - tangentFragPos);
+        float diff = max(dot(norm, -lightDir), 0.0);
+        vec3 diffuse = diff * lightColor;
+
+        float specularStrength = 0.8;
+
+        vec3 reflectDir = reflect(-lightDir, norm);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+        vec3 specular = specularStrength * spec * lightColor;
+
+
+        float ambientStrength = 0.05;
+        vec3 ambient = ambientStrength * lightColor;
+
+        vec4 result = vec4(ambient + diffuse + specular, 1.0);
+        col = result;
     }
     else{
-        col = vec4(normalize(fNormal), 1.f);
+        col = vec4(fTexCoord, 0.0f, 1.f);
     }
     fragColor = vec4(result, 1);
     fragColor = col;

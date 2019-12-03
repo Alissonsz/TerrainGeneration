@@ -13,6 +13,8 @@ uniform mat4 MVP;
 uniform mat4 M;
 uniform mat4 V;
 uniform mat4 N;
+uniform sampler2D texture1;
+
 
 out vec3 fNormal;
 out vec4 fColor;
