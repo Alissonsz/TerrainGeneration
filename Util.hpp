@@ -17,7 +17,7 @@
 //#include "controls.hpp"
 //#include "vectormath/vectormath.h"
 
-#define QTDTEXTURAS 5
+#define QTDTEXTURAS 7
 
 
 const char* projectTitle = "Terrain";
@@ -38,8 +38,8 @@ vector<GLfloat> texcoord;
 
 bool enablePolygon, enableCull,  noise=false;
 
-static GLuint indexSize = 40.0;
-static GLfloat meshSize = 160.0;
+static GLuint indexSize = 32.0;
+static GLfloat meshSize = 128.0;
 
 static GLsizei IndexCount;
 static float TessLevelInner;
@@ -49,7 +49,9 @@ const char* filenames[QTDTEXTURAS] = {"container.jpg",
                                     "agua.jpg",
                                     "grama.jpg",
                                     "snow.jpg",
-                                    "snowT.jpg"};
+                                    "mountain.jpg",
+                                    "texture1.jpg",
+                                    "texture2.png"};
 
 GLuint allTextures[QTDTEXTURAS];
 float deltaTime = 0.0f;

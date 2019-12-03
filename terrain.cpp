@@ -232,32 +232,6 @@
 //	// Calculate the tess scale factor
 //	calcTessScale(node);
 //
-//	    glUseProgram(activeShader);
-//    //    computeMatricesFromInputs(window);
-//    glm::mat4 MVP = camera.getProjectionMatrix(WIDTH, HEIGHT) * camera.getViewMatrix() * glm::mat4(1.0);
-//    float px = camera.Position.x; float py = camera.Position.y; float pz = camera.Position.z;
-//
-//    glm::mat4 V = camera.getViewMatrix();
-//    glm::mat4 M = glm::mat4(1.0);
-//    glm::mat4 VM = V * M;
-//
-//    glm::mat4 N = glm::transpose(glm::inverse(V));
-//    glUniformMatrix4fv(glGetUniformLocation(activeShader, "MVP"), 1, GL_FALSE, &MVP[0][0]);
-//    glUniformMatrix4fv(glGetUniformLocation(activeShader, "VM"), 1, GL_FALSE, &VM[0][0]);
-//    glUniformMatrix4fv(glGetUniformLocation(activeShader, "N"), 1, GL_FALSE, &N[0][0]);
-//
-//    glUniform3f(glGetUniformLocation(activeShader, "viewPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-//    glUniform1i(glGetUniformLocation(activeShader, "terra"), 0);
-//    glUniform1i(glGetUniformLocation(activeShader, "agua"),  1);
-//    glUniform1i(glGetUniformLocation(activeShader, "grama"), 2);
-//    glUniform1i(glGetUniformLocation(activeShader, "neve"), 3);
-//    glUniform1i(glGetUniformLocation(activeShader, "montanha"), 4);
-//    glUniform1i(glGetUniformLocation(activeShader, "tess"), enableTess);
-//    glUniform1f(glGetUniformLocation(activeShader, "noised"), noise);
-//    glUniform1i(glGetUniformLocation(activeShader, "frag"), CPUnoise);
-//    glUniform1f(glGetUniformLocation(activeShader, "mesh"), meshSize);
-//
-//
 //	// Setup matrices
 //	glusMatrix4x4Identityf(g_mvMatrix);
 //	glusMatrix4x4Identityf(g_mMatrix);

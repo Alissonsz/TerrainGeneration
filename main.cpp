@@ -70,7 +70,6 @@ int initGL(){
 
 int init(){
     initGL();
-//    terrain_init();
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -82,7 +81,7 @@ int init(){
     glfwPollEvents();
     glfwSetCursorPos(window, WIDTH/2, HEIGHT/2);
 
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(0.7f, 0.7f, 0.9f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -128,13 +127,13 @@ void createVerticesIndexes(){
     float tamAmostra = meshSize / (float)indexSize;
     for (GLuint i = 0; i < indexSize ; i++){
 		for (GLuint j = 0; j < indexSize ; j++) {
-			indices.push_back( i*(indexSize+1) 		+ j);		// V0
-			indices.push_back( i*(indexSize+1) 		+ (j+1));	// V1
-			indices.push_back( (i+1)*(indexSize+1) 	+ (j+1));		// V2
-
-			indices.push_back( i*(indexSize+1) 		+ j);	// V1
-			indices.push_back( (i+1)*(indexSize+1) 	+ (j+1));	// V3
+			indices.push_back( i*(indexSize+1)  + j);		// V0
+			indices.push_back( i*(indexSize+1)  + (j+1));	// V3
 			indices.push_back( (i+1)*(indexSize+1) 	+ j);		// V2
+
+			indices.push_back( i*(indexSize+1) 	    + (j+1));		// V2
+			indices.push_back( (i+1)*(indexSize+1) 	+ (j+1));		// V2
+			indices.push_back( (i+1)*(indexSize+1)  + j);	// V1
 		}
 	}
 
@@ -208,18 +207,17 @@ void createTextures(){
 }
 
 void setUnif(){
-    glUseProgram(activeShader);
-    //    computeMatricesFromInputs(window);
+        glUseProgram(activeShader);
+//    computeMatricesFromInputs(window);
     glm::mat4 MVP = camera.getProjectionMatrix(WIDTH, HEIGHT) * camera.getViewMatrix() * glm::mat4(1.0);
     float px = camera.Position.x; float py = camera.Position.y; float pz = camera.Position.z;
 
-    glm::mat4 V = camera.getViewMatrix();
+    glm::mat4 VM = camera.getViewMatrix();
     glm::mat4 M = glm::mat4(1.0);
-    glm::mat4 VM = V * M;
-
+    glm::mat4 V = VM * M;
     glm::mat4 N = glm::transpose(glm::inverse(V));
     glUniformMatrix4fv(glGetUniformLocation(activeShader, "MVP"), 1, GL_FALSE, &MVP[0][0]);
-    glUniformMatrix4fv(glGetUniformLocation(activeShader, "V"), 1, GL_FALSE, &VM[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(activeShader, "V"), 1, GL_FALSE, &V[0][0]);
     glUniformMatrix4fv(glGetUniformLocation(activeShader, "M"), 1, GL_FALSE, &M[0][0]);
     glUniformMatrix4fv(glGetUniformLocation(activeShader, "N"), 1, GL_FALSE, &N[0][0]);
 
@@ -229,6 +227,8 @@ void setUnif(){
     glUniform1i(glGetUniformLocation(activeShader, "grama"), 2);
     glUniform1i(glGetUniformLocation(activeShader, "neve"), 3);
     glUniform1i(glGetUniformLocation(activeShader, "montanha"), 4);
+    glUniform1i(glGetUniformLocation(activeShader, "texture1"), 5);
+    glUniform1i(glGetUniformLocation(activeShader, "texture2"), 6);
     glUniform1i(glGetUniformLocation(activeShader, "tess"), enableTess);
     glUniform1f(glGetUniformLocation(activeShader, "noised"), noise);
     glUniform1i(glGetUniformLocation(activeShader, "frag"), CPUnoise);
@@ -272,9 +272,7 @@ void draw(){
     // indexSize buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
     //if(programTessID > 3){
-    //    terrain_createTree(0, 0, 0, terrainWidth, terrainLength);
-    //	  terrain_render();
-    glDrawElements(GL_PATCHES, indices.size(), GL_UNSIGNED_SHORT, (void*)0);
+        glDrawElements(GL_PATCHES, indices.size(), GL_UNSIGNED_SHORT, (void*)0);
 
     //}
    // else{

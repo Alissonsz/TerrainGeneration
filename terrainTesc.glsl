@@ -24,7 +24,7 @@ uniform float radius;
 uniform float mesh;
 
 #define ID gl_InvocationID
-bool newMet = true;
+bool newMet = false;
 
 float LOD(vec3 posV, vec3 cam){
   float dist = distance(posV, cam);

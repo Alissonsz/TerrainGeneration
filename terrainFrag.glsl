@@ -6,18 +6,17 @@ in vec2 fTexCoord;
 //in float vNoise;
 in vec3 fPosition;
 //in vec3 upNormal;
-in vec3 TangentLightPos;
-in vec3 TangentViewPos;
-in vec3 TangentFragPos;
-in float fHeightScale;
-in float fHBase;
-in vec3 fEyeVector;
+in vec3 tangentLightPos;
+in vec3 tangentViewPos;
+in vec3 tangentFragPos;
 
 uniform sampler2D terra;
 uniform sampler2D agua;
 uniform sampler2D grama;
 uniform sampler2D neve;
 uniform sampler2D montanha;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
 
 uniform vec3 viewPos;
 uniform int frag;
@@ -42,7 +41,8 @@ float weightGrass;
 
 vec3 fgNormal;
 
- vec3 heightblend(vec3 tex1, float height1, vec3 tex2, float height2){
+ vec3 heightblend(vec3 tex1, float height1, vec3 tex2, float height2)
+{
     float heightBlendFactor = 1.f;
     float height_start = max(height1, height2 - 1) - heightBlendFactor;
     float level1 = max(height1 - height_start, 0);
@@ -50,7 +50,8 @@ vec3 fgNormal;
     return ((tex1 * level1) + (tex2 * level2)) / (level1 + level2);
 }
 
- vec3 surf(vec3 tex1, float h1, vec3 tex2, float h2){
+ vec3 surf(vec3 tex1, float h1, vec3 tex2, float h2)
+{
     vec3 t1 = tex1;
     vec3 t2 = tex2;
     return heightblend (t1, h1, t2, h2);
@@ -58,264 +59,84 @@ vec3 fgNormal;
 
 #define clamp01(x) clamp(x, 0.0, 1.0)
 
-/*
-float softShadow(vec3 ro, vec3 rd )
-{
-    float res = 1.0;
-    float t = 0.001;
-	  for( int i=0; i<80; i++ ){
-      vec3  p = ro + t*rd;
-      float h = p.y - vNoise;
-		  res = min( res, 16.0*h/t );
-		  t += h;
-		  if( res<0.001 ||p.y>(200.0) )
-		    break;
-	}
-	return clamp( res, 0.0, 1.0 );
-}
+vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
+    int binaryIter = 5;
+    vec2 P = viewDir.xy * 0.3;
 
-float hash( float n )
-{
-  return fract(sin(n)*43758.5453123);
-}
+    vec2 prevCoords = texCoords;
+    texCoords = texCoords + P;
+    P = prevCoords;
 
-float noise( in vec2 x )
-{
-  vec2 p = floor(x);
-  vec2 f = fract(x);
+    vec2 uvin = texCoords;
+    vec2 uvout = P;
 
-  f = f*f*(3.0-2.0*f);
+    vec2 currentCoords;
+    float Hmax = 1.0f;
+    float Hmin = 0.0f;
 
-  float n = p.x + p.y*57.0;
+    for(int i=0; i<binaryIter; i++){
+        float H = (Hmin + Hmax)/2; // middle
+        currentCoords = uvin * H + uvout * (1 - H);
+        float h = texture(texture1, currentCoords).r;
 
-  float res = mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
-    mix( hash(n+ 57.0), hash(n+ 58.0),f.x),f.y);
-
-  return res;
-}
-
-//const mat2 m2 = mat2(1.6,-1.2,1.2,1.6);
-const mat2 m2 = mat2(0.8,-0.6,0.6,0.8);
-
-float fbm( vec2 p )
-{
-  float f = 0.0;
-
-  f += 0.5000*noise( p ); p = m2*p*2.02;
-  f += 0.2500*noise( p ); p = m2*p*2.03;
-  f += 0.1250*noise( p ); p = m2*p*2.01;
-  f += 0.0625*noise( p );
-
-  return f/0.9375;
-}
-
-
-vec3 noised( in vec2 x )
-{
-  vec2 p = floor(x);
-  vec2 f = fract(x);
-
-  vec2 u = f*f*(3.0-2.0*f);
-
-  float n = p.x + p.y*57.0;
-
-  float a = hash(n+  0.0);
-  float b = hash(n+  1.0);
-  float c = hash(n+ 57.0);
-  float d = hash(n+ 58.0);
-  return vec3(a+(b-a)*u.x+(c-a)*u.y+(a-b-c+d)*u.x*u.y,
-    30.0*f*f*(f*(f-2.0)+1.0)*(vec2(b-a,c-a)+(a-b-c+d)*u.yx));
-
-}
-
-float terrain2( in vec2 x )
-{
-  vec2  p = x*0.003;
-  float a = 0.0;
-  float b = 1.0;
-  vec2  d = vec2(0.0);
-  for( int i=0; i<14; i++ )
-  {
-    vec3 n = noised(p);
-    d += n.yz;
-    a += b*n.x/(1.0+dot(d,d));
-    b *= 0.5;
-    p=m2*p;
-  }
-
-  return 140.0*a;
-}
-
-float SC = 20.f;
-
-float detailH( in vec2 x )
-{
-    float d = 0.0;//50.0*texture( iChannel2, x*0.03/SC, 0.0 ).x;
-    return d + 0.5*noise(x*2.0/SC);
-}
-
-float detailM( in vec2 x )
-{
-    float d = 0.0;//50.0*texture( iChannel2, x*0.03/SC, 0.0 ).x;
-    return d;
-}
-
-float terrainH( in vec2 x )
-{
-	vec2  p = x*0.003/SC;
-    float a = 0.0;
-    float b = 1.0;
-	vec2  d = vec2(0.0);
-    for( int i=0; i<15; i++ )
-    {
-        vec3 n = noised(p);
-        d += n.yz;
-        a += b*n.x/(1.0+dot(d,d));
-		b *= 0.5;
-        p = m2*p*2.0;
+        if(H <= h) Hmin = H;
+        else Hmax = H;
     }
 
-    float de = detailH(x);
-	return SC*100.0*a - de;
+    return currentCoords;
 }
 
-float terrainM( in vec2 x )
-{
-	vec2  p = x*0.003/SC;
-    float a = 0.0;
-    float b = 1.0;
-	vec2  d = vec2(0.0);
-    for( int i=0; i<9; i++ )
+vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
+    // number of depth layers
+    const float numLayers = 60;
+    // calculate the size of each layer
+    float layerDepth = 1.0 / numLayers;
+    // depth of current layer
+    float currentLayerDepth = 0.0;
+    // the amount to shift the texture coordinates per layer (from vector P)
+    vec2 P = viewDir.xy * 0.3;
+
+
+    vec2 deltaTexCoords = P / numLayers;
+    vec2 prevCoords = texCoords;
+    texCoords = texCoords + P;
+
+    P = prevCoords;
+
+    // get initial values
+    vec2  currentTexCoords     = texCoords ;
+    float currentDepthMapValue = 1 - texture(texture1, currentTexCoords).r;
+    vec2 finalCoords;
+
+    while(currentLayerDepth < currentDepthMapValue)
     {
-        vec3 n = noised(p);
-        d += n.yz;
-        a += b*n.x/(1.0+dot(d,d));
-		b *= 0.5;
-        p = m2*p*2.0;
+        // shift texture coordinates along direction of P
+        currentTexCoords -= deltaTexCoords;
+
+        // get depthmap value at current texture coordinates
+
+        currentDepthMapValue = 1 - texture(texture1, currentTexCoords).r;
+
+        // get depth of next layer
+        currentLayerDepth += layerDepth;
+
     }
-	return SC*100.0*a - detailH(x);
+
+    vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+
+    // get depth after and before collision for linear interpolation
+    float afterDepth  = currentDepthMapValue - currentLayerDepth;
+    float beforeDepth = (1 - texture(texture1, prevTexCoords).r) - currentLayerDepth + layerDepth;
+
+    // interpolation of texture coordinates
+    float weight = afterDepth / (afterDepth - beforeDepth);
+    vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+
+    return finalTexCoords;
+
+
+
 }
-
-float terrainL( in vec2 x )
-{
-	vec2  p = x*0.003/SC;
-    float a = 0.0;
-    float b = 1.0;
-	vec2  d = vec2(0.0);
-    for( int i=0; i<7; i++ )
-    {
-        vec3 n = noised(p);
-        d += n.yz;
-        a += b*n.x/(1.0+dot(d,d));
-		b *= 0.5;
-        p = m2*p*2.0;
-    }
-
-	return SC*100.0*a;
-}
-
-float interesct( in vec3 ro, in vec3 rd, in float tmin, in float tmax )
-{
-  float t = tmin;
-	for( int i=0; i<256; i++ )
-	{
-        vec3 pos = ro + t*rd;
-		float h = pos.y - terrainM( pos.xz );
-		if( h<(0.002*t) || t>tmax ) break;
-		t += 0.5*h;
-	}
-
-	return t;
-}
-
-float plaIntersect( in vec3 ro, in vec3 rd, in vec4 p )
-{
-    return -(dot(ro,p.xyz)+p.w)/dot(rd,p.xyz);
-}
-
-vec3 calcNormal( in vec3 pos, float t )
-{
-    vec2  eps = vec2( 0.002*t, 0.0 );
-    return normalize( vec3( terrainH(pos.xz-eps.xy) - terrainH(pos.xz+eps.xy),
-                            2.0*eps.x,
-                            terrainH(pos.xz-eps.yx) - terrainH(pos.xz+eps.yx) ) );
-}
-
-vec3 render(vec3 ro, vec3 rd){
-  vec3 light1 = normalize( vec3(-0.8,0.4,-0.3) );
-    // bounding plane
-    float tmin = 1.0;
-    float tmax = 1000.0;
-    //float tmax = 10000*fPosition.y; //minha Adap
-#if 1
-    float maxh = 100.0;//*fPosition.y;//300.0*SC;
-    float tp = (maxh-ro.y)/rd.y;
-    if( tp>0.0 )
-    {
-        if( ro.y>maxh ) tmin = max( tmin, tp );
-        else            tmax = min( tmax, tp );
-    }
-#endif
-	float sundot = clamp(dot(rd,light1),0.0,1.0);
-	vec3 col;
-  float t = interesct( ro, rd, tmin, tmax );
-  if( t<=tmax)
-    {
-        // mountains
-		vec3 pos = fPosition*ro + t*rd;
-    vec3 nor = calcNormal( pos, t );
-    //nor = normalize( nor + 0.5*( vec3(-1.0,0.0,-1.0) + vec3(2.0,1.0,2.0)*texture(iChannel1,0.01*pos.xz).xyz) );
-    vec3 ref = reflect( rd, nor );
-    float fre = clamp( 1.0+dot(rd,nor), 0.0, 1.0 );
-
-         //rock
-		float r = noise((7.0/SC)*pos.xz/256.0);
-    col = (r*0.25+0.75)*0.9*mix( vec3(0.08,0.05,0.03), vec3(0.10,0.09,0.08),
-                                     noise(0.00007*vec2(pos.x,pos.y*48.0)/SC));
-		col = mix( col, 0.20*vec3(0.45,.30,0.15)*(0.50+0.50*r),smoothstep(0.70,0.9,nor.y) );
-    col = mix( col, 0.15*vec3(0.30,.30,0.10)*(0.25+0.75*r),smoothstep(0.95,1.0,nor.y) );
-
-		// snow
-    float h = smoothstep(55.0,200.0,pos.y + 25.0*vNoise );  //altura
-    float e = smoothstep(1.0-0.5*h,1.0-0.1*h,nor.y);        //transparência
-    float o = 0.3 + 0.7*smoothstep(0.0,0.1,nor.x+h*h);      //gama
-    float s = h*e*o;
-    col = mix( col, 0.29*vec3(0.62,0.65,0.7), smoothstep( 0.1, 0.9, s ) );
-
-         // lighting
-    float amb = clamp(0.5+0.5*nor.y,0.0,1.0);
-		float dif = clamp( dot( light1, nor ), 0.0, 1.0 );
-		float bac = clamp( 0.2 + 0.8*dot( normalize( vec3(-light1.x, 0.0, light1.z ) ), nor ), 0.0, 1.0 );
-		float sh = 1.0; if( dif>=0.0001 )
-		sh = softShadow(pos+light1*20.0,light1);
-
-		vec3 lin  = vec3(0.0);
-		lin += dif*vec3(7.00,5.00,3.00)*vec3( sh, sh*sh*0.5+0.5*sh, sh*sh*0.8+0.2*sh );
-		lin += amb*vec3(0.40,0.60,0.80)*1.2;
-        lin += bac*vec3(0.40,0.50,0.60);
-		col *= lin;
-
-        col += s*0.1*pow(fre,4.0)*vec3(7.0,5.0,3.0)*sh * pow( clamp(dot(light1,ref), 0.0, 1.0),16.0);
-        col += s*0.1*pow(fre,4.0)*vec3(0.4,0.5,0.6)*smoothstep(0.0,0.6,ref.y);
-
-		// fog
-        //float fo = 1.0-exp(-0.000004*t*t/(SC*SC) );
-    float fo = 1.0-exp(-0.001*t/SC );
-    vec3 fco = 0.7*vec3(0.5,0.7,0.9) + 0.1*vec3(1.0,0.8,0.5)*pow( sundot, 4.0 );
-    col = mix( col, fco, fo );
-
-        // sun scatter
-		col += 0.3*vec3(1.0,0.8,0.4)*pow( sundot, 8.0 )*(1.0-exp(-0.002*t/SC));
-	}
-
-    // gamma
-	col = pow(col,vec3(0.4545));
-
-	return col;
-}
-
-*/
-
 
 void main(){
     vec3 X = dFdx(fPosition);
@@ -345,19 +166,49 @@ void main(){
     vec4 col;
     vec3 tmp;
     if(frag%2 == 0){
-        col = texture(montanha, fTexCoord);
+      bool parFlag = true;
+      vec3 newPos;
+      vec3 newNormal;
+
+      vec2 texCoords = fTexCoord;
+
+      vec3 viewDir = normalize(tangentViewPos - tangentFragPos);
+      if(texCoords.x < 0.0 || texCoords.y < 0.0) discard;
+      else if(parFlag)
+          texCoords = parallaxMapping(fTexCoord, viewDir);
+      else if(!parFlag)
+          texCoords = parallaxBinarySearch(fTexCoord, viewDir);
+      //if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+     //    discard;
+
+
+      newNormal = fNormal;//texture(texture1, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
+      newNormal = normalize(newNormal);
+
+      vec3 norm = newNormal;
+      vec3 lightColor = texture(texture2, vec2(texCoords)).rgb;
+
+      vec3 lightDir = normalize(tangentLightPos - tangentFragPos);
+      float diff = max(dot(norm, -lightDir), 0.0);
+      vec3 diffuse = diff * lightColor;
+
+      float specularStrength = 0.8;
+
+      vec3 reflectDir = reflect(-lightDir, norm);
+      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+      vec3 specular = specularStrength * spec * lightColor;
+
+
+      float ambientStrength = 0.05;
+      vec3 ambient = ambientStrength * lightColor;
+
+      vec4 result = vec4(ambient + diffuse + specular, 1.0);
+      col = result;
     }
     else{
-        vec3 n = normalize(fNormal);
-        vec3 v = normalize(fEyeVector);
-        vec2 uv = fTexCoord;
-        vec2 Kxz = v.xz * n.y * 1.f;
-        for ( int i = 4 - 1; i >= 0; i -- ){
-          uv += (texture(neve, fTexCoord).r - fHBase) * Kxz;
-        }
-        col = texture(montanha, clamp(uv, 0, 1));
+        col = vec4(normalize(fNormal), 1.f);
     }
-
-    fragColor = vec4(col.rgb*result, 1.f);
+    fragColor = vec4(result, 1);
+    fragColor = col;
 
 }
