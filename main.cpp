@@ -282,8 +282,8 @@ void deleteProgram(){
 }
 
 void createTextures(){
-    for(int i = 0; i < QTDTEXTURAS; i++){
-        if(i==5) continue;
+    /*for(int i = 0; i < QTDTEXTURAS; i++){
+        if(i!=6) continue;
         unsigned char* texturas;
 
         glGenTextures(1, &allTextures[i]);
@@ -300,7 +300,7 @@ void createTextures(){
         texturas = SOIL_load_image(filenames[i], &width, &height, &nrChannels, SOIL_LOAD_RGB);
         if (texturas)
         {
-            glActiveTexture(GL_TEXTURE0 + i);
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, allTextures[i]);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texturas);
             glGenerateMipmap(GL_TEXTURE_2D);
@@ -310,10 +310,12 @@ void createTextures(){
             std::cout << "Failed to load texture" << filenames[i] << std::endl;
         }
         stbi_image_free(texturas);
-    }
+    }*/
+    int width, height, nrChannels;
+
     unsigned char* data1;
     glGenTextures(1,  &allTextures[5]);
-    glActiveTexture(GL_TEXTURE0 + 5);
+    glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, allTextures[5]);
 	
 	// set the texture wrapping parameters
@@ -323,10 +325,9 @@ void createTextures(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
-	
-    int width, height, nrChannels;
+
     //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    data1 = stbi_load("heightmap.jpg", &width, &height, &nrChannels, 0);
+    data1 = stbi_load("texture1.jpg", &width, &height, &nrChannels, 0);
 
     if (data1 != NULL){
     	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -341,6 +342,67 @@ void createTextures(){
     else {
         std::cout << "Failed to load texture" << std::endl;
     }
+
+    unsigned char *data;
+    unsigned int texture2;
+    glGenTextures(1, &texture2);
+    glActiveTexture(GL_TEXTURE0 + 1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    data = stbi_load("ps_texture_1k.png", &width, &height, &nrChannels, 0);
+
+    if (data)
+    {
+        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		GLenum error = glGetError();
+		if(error != GL_NO_ERROR) std::cout << gluErrorString(error)<<std::endl;
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+    data1;
+    unsigned int tex;
+    glGenTextures(1,  &tex);
+    glActiveTexture(GL_TEXTURE0 + 2);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	
+	// set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+	
+    //int width, height, nrChannels;
+    //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    data1 = stbi_load("normals.png", &width, &height, &nrChannels, 0);
+
+    if (data1 != NULL){
+    	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data1);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		GLenum error = glGetError();
+		if(error != GL_NO_ERROR) std::cout << gluErrorString(error)<<std::endl;
+    }
+    else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+
+
 
 }
 
@@ -360,13 +422,14 @@ void setUnif(){
     glUniformMatrix4fv(glGetUniformLocation(activeShader, "N"), 1, GL_FALSE, &N[0][0]);
 
     glUniform3f(glGetUniformLocation(activeShader, "viewPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-    glUniform1i(glGetUniformLocation(activeShader, "terra"), 0);
+    /*glUniform1i(glGetUniformLocation(activeShader, "terra"), 0);
     glUniform1i(glGetUniformLocation(activeShader, "agua"),  1);
     glUniform1i(glGetUniformLocation(activeShader, "grama"), 2);
     glUniform1i(glGetUniformLocation(activeShader, "neve"), 3);
-    glUniform1i(glGetUniformLocation(activeShader, "montanha"), 4);
-    glUniform1i(glGetUniformLocation(activeShader, "texture1"), 5);
-    glUniform1i(glGetUniformLocation(activeShader, "texture2"), 6);
+    glUniform1i(glGetUniformLocation(activeShader, "montanha"), 4);*/
+    glUniform1i(glGetUniformLocation(activeShader, "texture1"), 0);
+    glUniform1i(glGetUniformLocation(activeShader, "texture2"), 1);
+    glUniform1i(glGetUniformLocation(activeShader, "normalTexture"), 2);
     glUniform1i(glGetUniformLocation(activeShader, "tess"), enableTess);
     glUniform1f(glGetUniformLocation(activeShader, "noised"), noise);
     glUniform1i(glGetUniformLocation(activeShader, "frag"), CPUnoise);

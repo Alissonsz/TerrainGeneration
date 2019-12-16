@@ -95,7 +95,7 @@ void main(){
   
   f00Position.y += fbm(f00Position.xyz*0.1) ;
   
-  f00Position.y = heightNormal.r*0.26;
+  f00Position.y = 0;
 
   gl_Position =  vec4(f00Position, 1.0);
 }
