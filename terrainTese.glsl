@@ -11,14 +11,17 @@ uniform mat4 MVP;
 uniform int oct;
 uniform float lac;
 uniform sampler2D texture1;
-
+uniform vec3 viewPos;
 //uniform bool noised;
 
 in vec3 tcPosition[];
 in vec4 tcColor[];
 in vec2 tcTexCoord[];
 in vec3 tcNormal[];
+in float tcFactor[];
 
+out float f00Height;
+out float f00Factor;
 out vec3 f00Position;
 out vec4 f00Color;
 out vec2 f00TexCoord;
@@ -71,6 +74,17 @@ float ridgedNoise(in vec3 p, int octaves, float H, float gain, float amplitude, 
   return total;
 }
 
+uniform float mesh;
+
+float LOD(float dist){
+  float T = 4*mesh/(0.5*dist);
+  if(T > 64)
+      return 64.f;
+  else if(T < 1)
+      return 1.f;
+  return T;
+}
+
 void main(){
   vec3 p0 = gl_TessCoord.x * tcPosition[0];
   vec3 p1 = gl_TessCoord.y * tcPosition[1];
@@ -79,7 +93,6 @@ void main(){
 
   vec3 edge01 = tcPosition[1]-tcPosition[0];
   vec3 edge02 = tcPosition[2]-tcPosition[0];
-
 
   vec4 c0 = gl_TessCoord.x * tcColor[0];
   vec4 c1 = gl_TessCoord.y * tcColor[1];
@@ -91,11 +104,19 @@ void main(){
   vec2 t2 = gl_TessCoord.z * tcTexCoord[2];
   f00TexCoord = (t0 + t1 + t2);
 
-  vec4 heightNormal = texture(texture1, f00TexCoord);
-  
-  f00Position.y += fbm(f00Position.xyz*0.1) ;
-  
-  f00Position.y = 0;
+  float f0 = gl_TessCoord.x * tcFactor[0];
+  float f1 = gl_TessCoord.y * tcFactor[1];
+  float f2 = gl_TessCoord.z * tcFactor[2];
+  f00Factor = (f0 + f1 + f2);
 
-  gl_Position =  vec4(f00Position, 1.0);
+  f00Factor = LOD(distance(viewPos, f00Position));
+
+
+  vec4 heightNormal = texture(texture1, f00TexCoord);
+
+  f00Height = fbm(f00Position.xyz*0.05) + heightNormal.r*22;
+
+//  f00Position.y += f00Height;
+
+  gl_Position = vec4(f00Position, 1.0);
 }

@@ -6,12 +6,13 @@ in vec3 vPosition[];
 in vec4 vColor[];
 in vec2 vTexCoord[];
 in vec3 vNormal[];
+in float tessFactor[];
 
+out float tcFactor[];
 out vec3 tcNormal[];
 out vec3 tcPosition[];
 out vec4 tcColor[];
 out vec2 tcTexCoord[];
-
 uniform vec3 viewPos;
 
 uniform int tess;
@@ -56,16 +57,17 @@ void main(){
   tcPosition[ID]  = vPosition[ID];
   tcColor[ID]     = vColor[ID];
   tcNormal[ID]     = vNormal[ID];
-
+  tcFactor[ID] = tessFactor[ID];
 
   if (ID == 0) {
-    vec3 v0 = gl_in[0].gl_Position.xyz;
-    vec3 v1 = gl_in[1].gl_Position.xyz;
-    vec3 v2 = gl_in[2].gl_Position.xyz;
 
-    vec3 bTriangulo = (v0 + v1 + v2)/3;
 
     if(tess==1){
+      vec3 v0 = gl_in[0].gl_Position.xyz;
+      vec3 v1 = gl_in[1].gl_Position.xyz;
+      vec3 v2 = gl_in[2].gl_Position.xyz;
+
+      vec3 bTriangulo = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz)/3;
       TessLevelInner = LOD(bTriangulo, viewPos);
 
       d0=v1+(v2-v1)/2;
@@ -82,7 +84,6 @@ void main(){
     else if(tess == 2){
       TessLevelInner = 2;
     }
-
     gl_TessLevelInner[0] = TessLevelInner;
     gl_TessLevelOuter[0] = e0;
     gl_TessLevelOuter[1] = e1;

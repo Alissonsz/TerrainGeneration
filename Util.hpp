@@ -26,7 +26,7 @@ using namespace glm;
 using namespace std;
 
 GLFWwindow* window;
-float amp;
+float factor = 1;
 glm::vec3 lightPos;
 GLuint programGeomID;
 GLuint programTessID;

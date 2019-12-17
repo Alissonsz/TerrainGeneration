@@ -1,0 +1,68 @@
+# depslib dependency file v1.0
+1575352961 source:c:\users\iagop\desktop\terraingeneration\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1575352961 c:\users\iagop\desktop\terraingeneration\loadshaders.hpp
+
+1576556990 source:c:\users\iagop\desktop\terraingeneration\main.cpp
+	"Util.hpp"
+	"camera.h"
+
+1576557083 c:\users\iagop\desktop\terraingeneration\util.hpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+	<typeinfo>
+	<cmath>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<SOIL/stb_image_aug.h>
+	<SOIL/SOIL.h>
+	"simplex.h"
+	"LoadShaders.hpp"
+
+1575352961 c:\users\iagop\desktop\terraingeneration\simplex.h
+	<functional>
+	<array>
+	<random>
+	<math.h>
+	<stdlib.h>
+	<glm/geometric.hpp>
+	<glm/vec2.hpp>
+	<glm/vec3.hpp>
+	<glm/vec4.hpp>
+	<glm/mat2x2.hpp>
+
+1575352961 c:\users\iagop\desktop\terraingeneration\camera.h
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<vector>
+
+1576547667 source:c:\users\iagop\desktop\terraingeneration\terrain.cpp
+
+1575352961 source:c:\terraingeneration\loadshaders.cpp
+	<stdio.h>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	<stdlib.h>
+	<string.h>
+	<GL/glew.h>
+	"LoadShaders.hpp"
+
+1575352961 c:\terraingeneration\loadshaders.hpp
+

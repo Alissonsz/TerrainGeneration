@@ -3,21 +3,20 @@
 in vec3 fNormal;
 in vec4 fColor;
 in vec2 fTexCoord;
-//in float vNoise;
+in float fFactor;
 in vec3 fPosition;
 //in vec3 upNormal;
 in vec3 tangentLightPos;
 in vec3 tangentViewPos;
 in vec3 tangentFragPos;
 
-/*uniform sampler2D terra;
+uniform sampler2D terra;
 uniform sampler2D agua;
 uniform sampler2D grama;
 uniform sampler2D neve;
-uniform sampler2D montanha;*/
+uniform sampler2D montanha;
 uniform sampler2D texture1;
 uniform sampler2D texture2;
-uniform sampler2D normalTexture;
 
 uniform vec3 viewPos;
 uniform int frag;
@@ -25,16 +24,16 @@ out vec4 fragColor;
 
  #define clamp01(x) clamp(x, 0.0, 1.0)
 
-/*vec3 water = texture2D(agua, fTexCoord).xyz;
+vec3 water = texture2D(agua, fTexCoord).xyz;
 vec3 sand = texture2D(terra, fTexCoord).xyz;
 vec3 grass = texture2D(grama, fTexCoord).xyz;
 vec3 snow = texture2D(neve, fTexCoord).xyz;
-vec3 rock = texture2D(montanha, fTexCoord).xyz;*/
+vec3 rock = texture2D(montanha, fTexCoord).xyz;
 
 vec3 lightColor = vec3(0.6,0.67,0.69);
 vec3 diffuse = vec3(1.0f, 0.6f, 0.8f);
 vec3 ambient = vec3(0.05f, 0.05f, 0.08f);
-vec3 lightPos = vec3(1, 1.3, 1)*5;
+vec3 lightPos = vec3(90.5, 20.3, -30.5)*1;
 
 float weightWater;
 float weightStone;
@@ -143,8 +142,6 @@ void main(){
     vec3 X = dFdx(fPosition);
     vec3 Y = dFdy(fPosition);
     vec3 normal2 = normalize(cross(X,Y));
-    vec3 newNormal = texture(normalTexture, vec2(fTexCoord.x, 0 + (1 - fTexCoord.y))).rgb;//texture(texture1, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
-    newNormal = normalize(newNormal * 2.0 - 1.0);
     //normal2 = normalize(cross(upNormal,normal2));
     //normal2 = normalize(cross(normal2,calcNormal(fPosition,fPosition.y)));
 //    normal2 = normalize(cross(normal2,fNormal));
@@ -168,9 +165,10 @@ void main(){
 
     vec4 col;
     vec3 tmp;
-    if(frag%2 == 0){
+    if(frag%2 == 0.f){
         bool parFlag = true;
         vec3 newPos;
+        vec3 newNormal;
 
         vec2 texCoords = fTexCoord;
 
@@ -184,8 +182,8 @@ void main(){
             discard;*/
 
 
-        newNormal = texture(normalTexture, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;//texture(texture1, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
-        newNormal = normalize(newNormal * 2.0 - 1.0);
+        newNormal = fNormal;//texture(texture1, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
+        newNormal = normalize(newNormal);
 
         vec3 norm = newNormal;
         vec3 lightColor = texture(texture2, vec2(texCoords)).rgb;
@@ -206,9 +204,11 @@ void main(){
 
         vec4 result = vec4(ambient + diffuse + specular, 1.0);
         col = result;
-    } else {
-        col = vec4(newNormal, 1.f);
     }
+    else{
+        col = texture(texture2, vec2(fTexCoord))*vec4(result,1.f);
+    }
+    fragColor = vec4(result, 1);
     fragColor = col;
 
 }

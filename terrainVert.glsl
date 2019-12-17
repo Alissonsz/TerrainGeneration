@@ -13,18 +13,19 @@ layout (location = 2) in vec2 aTexCoords;
 layout (location = 3) in vec3 aTangent;
 layout (location = 4) in vec3 aBitangent;
 
-
 out vec3 vPosition;
 out vec4 vColor;
 out vec2 vTexCoord;
 
 out float vNoise;
 out vec3 vNormal;
+out float tessFactor;
 
 out vec3 normalVertex;
 
 uniform bool CPUnoise;
 uniform mat4 MVP;
+uniform float factor;
 
 float hash(float n) { return fract(sin(n) * 1e4); }
 float hash(vec2 p) { return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x)))); }
@@ -73,6 +74,14 @@ float ridgedNoise(in vec3 p, int octaves, float H, float gain, float amplitude, 
   return total;
 }
 
+float LOD(float dist){
+  if(dist<=50) return 32.0;
+  else if(dist>50 && dist<=100) return 16.0;
+  else if(dist>100 && dist<=200) return 8.0;
+  else if(dist>200 && dist<=300) return 4.0;
+  else if(dist>300 && dist<=400) return 2.0;
+  else if(dist>400) return 1.0;
+}
 
 void main(){
   //vec3 position = aPos;
@@ -85,6 +94,7 @@ void main(){
 //      vNoise 	  += fbm(vPosition*i*10)*5;
 //    vPosition.y += vNoise;
 //
+  tessFactor = 1.f;
   vPosition.y = 1.f;
   gl_Position =  vec4(vPosition, 1.f);
 }

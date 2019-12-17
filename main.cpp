@@ -4,6 +4,11 @@
 double previousTime = glfwGetTime();
 int frameCount = 0;
 
+//const vec3 cubeVerts::v0 = vec3(-1,-1,-1);
+//const vec3 cubeVerts::v1 = vec3(1,-1,-1);
+//const vec3 cubeVerts::v2 = vec3(-1,-1,1);
+//const vec3 cubeVerts::v3 = vec3(1,-1,1);
+
 Camera camera(glm::vec3(75.0f, 45.0f, 75.0f));
 
 int main(int argv, char** argc){
@@ -69,10 +74,10 @@ int initGL(){
 }
 
 unsigned int quadVAO = 0;
-unsigned int quadVBO;
+unsigned int quadVBO;/*
 void renderQuad()
 {
-    
+
         // positions
         glm::vec3 pos1(-140.8f,  0.0f, 140.8f);
         glm::vec3 pos2(-140.8f, 0.0f, -140.8f);
@@ -155,12 +160,12 @@ void renderQuad()
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(8 * sizeof(float)));
         glEnableVertexAttribArray(4);
         glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(11 * sizeof(float)));
-    
+
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
-
+*/
 int init(){
     initGL();
 
@@ -237,7 +242,7 @@ void createVerticesIndexes(){
 			indices.push_back( (i+1)*(indexSize+1)  + j);	// V1
 		}
 	}
-    
+
   	for (GLfloat i = 1 ; i <= indexSize +1; i+=1.0){
 		for (GLfloat j = 1 ; j <= indexSize +1; j+=1.0) {
       		glm::vec2 vert = vec2((float)(i*tamAmostra), (float)(j*tamAmostra));
@@ -248,7 +253,7 @@ void createVerticesIndexes(){
             vertices.push_back(vert.x);
             vertices.push_back(h);
             vertices.push_back(vert.y);
-            
+
             float texx = MapInRange((float)vert.x, 4.0f, 132.0f, 0.0f, 1.0f);
             float texy = MapInRange((float)vert.y, 4.0f, 132.0f, 0.0f, 1.0f);
 
@@ -257,7 +262,7 @@ void createVerticesIndexes(){
             texcoord.push_back(texy);
         }
 	}
-    
+
 }
 
 void disableVertexAttribs(){
@@ -282,8 +287,8 @@ void deleteProgram(){
 }
 
 void createTextures(){
-    /*for(int i = 0; i < QTDTEXTURAS; i++){
-        if(i!=6) continue;
+    for(int i = 0; i < QTDTEXTURAS; i++){
+        if(i==5) continue;
         unsigned char* texturas;
 
         glGenTextures(1, &allTextures[i]);
@@ -300,7 +305,7 @@ void createTextures(){
         texturas = SOIL_load_image(filenames[i], &width, &height, &nrChannels, SOIL_LOAD_RGB);
         if (texturas)
         {
-            glActiveTexture(GL_TEXTURE0);
+            glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, allTextures[i]);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texturas);
             glGenerateMipmap(GL_TEXTURE_2D);
@@ -310,14 +315,12 @@ void createTextures(){
             std::cout << "Failed to load texture" << filenames[i] << std::endl;
         }
         stbi_image_free(texturas);
-    }*/
-    int width, height, nrChannels;
-
+    }
     unsigned char* data1;
     glGenTextures(1,  &allTextures[5]);
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0 + 5);
 	glBindTexture(GL_TEXTURE_2D, allTextures[5]);
-	
+
 	// set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -326,8 +329,9 @@ void createTextures(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
 
+    int width, height, nrChannels;
     //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    data1 = stbi_load("texture1.jpg", &width, &height, &nrChannels, 0);
+    data1 = stbi_load("heightmap.jpg", &width, &height, &nrChannels, 0);
 
     if (data1 != NULL){
     	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -342,73 +346,20 @@ void createTextures(){
     else {
         std::cout << "Failed to load texture" << std::endl;
     }
-
-    unsigned char *data;
-    unsigned int texture2;
-    glGenTextures(1, &texture2);
-    glActiveTexture(GL_TEXTURE0 + 1);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    data = stbi_load("ps_texture_1k.png", &width, &height, &nrChannels, 0);
-
-    if (data)
-    {
-        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-		GLenum error = glGetError();
-		if(error != GL_NO_ERROR) std::cout << gluErrorString(error)<<std::endl;
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
-    data1;
-    unsigned int tex;
-    glGenTextures(1,  &tex);
-    glActiveTexture(GL_TEXTURE0 + 2);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	
-	// set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-	
-    //int width, height, nrChannels;
-    //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    data1 = stbi_load("normals.png", &width, &height, &nrChannels, 0);
-
-    if (data1 != NULL){
-    	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data1);
-        glGenerateMipmap(GL_TEXTURE_2D);
-		GLenum error = glGetError();
-		if(error != GL_NO_ERROR) std::cout << gluErrorString(error)<<std::endl;
-    }
-    else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-
-
 
 }
 
 void setUnif(){
         glUseProgram(activeShader);
 //    computeMatricesFromInputs(window);
+    float y = 30.f;
+    if(camera.Position.y < y - 10){
+            camera.Position.y = y - 10;
+            CPUnoise=2.0;
+    }
+    else if(camera.Position.y > y - 10){
+            CPUnoise=1.0;
+    }
     glm::mat4 MVP = camera.getProjectionMatrix(WIDTH, HEIGHT) * camera.getViewMatrix() * glm::mat4(1.0);
     float px = camera.Position.x; float py = camera.Position.y; float pz = camera.Position.z;
 
@@ -422,18 +373,18 @@ void setUnif(){
     glUniformMatrix4fv(glGetUniformLocation(activeShader, "N"), 1, GL_FALSE, &N[0][0]);
 
     glUniform3f(glGetUniformLocation(activeShader, "viewPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-    /*glUniform1i(glGetUniformLocation(activeShader, "terra"), 0);
+    glUniform1i(glGetUniformLocation(activeShader, "terra"), 0);
     glUniform1i(glGetUniformLocation(activeShader, "agua"),  1);
     glUniform1i(glGetUniformLocation(activeShader, "grama"), 2);
     glUniform1i(glGetUniformLocation(activeShader, "neve"), 3);
-    glUniform1i(glGetUniformLocation(activeShader, "montanha"), 4);*/
-    glUniform1i(glGetUniformLocation(activeShader, "texture1"), 0);
-    glUniform1i(glGetUniformLocation(activeShader, "texture2"), 1);
-    glUniform1i(glGetUniformLocation(activeShader, "normalTexture"), 2);
+    glUniform1i(glGetUniformLocation(activeShader, "montanha"), 4);
+    glUniform1i(glGetUniformLocation(activeShader, "texture1"), 5);
+    glUniform1i(glGetUniformLocation(activeShader, "texture2"), 6);
     glUniform1i(glGetUniformLocation(activeShader, "tess"), enableTess);
     glUniform1f(glGetUniformLocation(activeShader, "noised"), noise);
     glUniform1i(glGetUniformLocation(activeShader, "frag"), CPUnoise);
     glUniform1f(glGetUniformLocation(activeShader, "mesh"), meshSize);
+    glUniform1f(glGetUniformLocation(activeShader, "factor"), factor);
 }
 
 void draw(){
