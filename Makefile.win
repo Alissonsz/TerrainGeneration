@@ -5,10 +5,10 @@ OBJS = main.cpp Shader.cpp
 CC = g++
 
 #INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -ISDL2
+INCLUDE_PATHS = -IC:\x86_64-w64-mingw32\include -IC:\glm-0.9.9.8 -IC:\glew-2.1.0\include
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = 
+LIBRARY_PATHS = -LC:\x86_64-w64-mingw32/lib -LC:\glew-2.1.0\lib\Release\x64
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 #-w suppresses all warnings
@@ -24,3 +24,4 @@ OBJ_NAME = Application
 #This is the target that compiles our executable
 all : $(OBJS)
 	$(CC) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS)  $(LINKER_FLAGS) $(COMPILER_FLAGS) -o $(OBJ_NAME)
+

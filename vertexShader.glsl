@@ -30,48 +30,26 @@ uniform mat4 projection;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
-/*out vec3 Normal;
-out vec3 FragPos;
-out vec2 texCord;*/
-
-
 void main(){
-
-    /*vec4 curV;
+    vec4 curV;
     curV = model * vec4(aPos, 1.0);
+    
     float texX, texY;
     texX = (curV.x + 15) / 30;
     texY = (curV.z + 15) / 30;
 
+    vs_out.FragPos = vec3(curV);
 
-    gl_Position = projection * view * curV;
+    vs_out.TexCoords = vec2(texX, texY);
 
-    Normal = aNormal;
-    FragPos = vec3(curV);
-
-
-    texCord = vec2(texX, texY);*/
-
-    vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
-    vs_out.TexCoords = aTexCoords;
-
-    vTang = normalize(mat3(model) * aTangent);
-    vBitang = normalize(mat3(model) * aBitangent);
-    vNormal = normalize(mat3(model) * aNormal);
-    /*mat3 TBN = transpose(mat3(T, B, N));
-
-    vs_out.TangentLightPos = TBN * lightPos;
-    vs_out.TangentViewPos  = TBN * viewPos;
-    vs_out.TangentFragPos  = TBN * vs_out.FragPos;*/
-
-    /*vec3 T = normalize(mat3(model) * aTangent);
+    vec3 T = normalize(mat3(model) * aTangent);
     vec3 B = normalize(mat3(model) * aBitangent);
     vec3 N = normalize(mat3(model) * aNormal);
     mat3 TBN = transpose(mat3(T, B, N));
 
     vs_out.TangentLightPos = TBN * lightPos;
     vs_out.TangentViewPos  = TBN * viewPos;
-    vs_out.TangentFragPos  = TBN * vs_out.FragPos;
+    vs_out.TangentFragPos  = TBN * vec3(curV);
     
-    gl_Position = projection * view * model * vec4(aPos, 1.0);*/
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
 }

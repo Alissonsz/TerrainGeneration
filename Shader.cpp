@@ -203,6 +203,13 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath){
 
 void Shader::use() {
     glUseProgram(ID);
+    char infoLog[512];
+    int success;
+    glGetProgramiv(ID, GL_LINK_STATUS, &success);
+    glGetProgramInfoLog(ID, 512, NULL, infoLog);
+    if (!success) {
+        std::cout << infoLog << std::endl;
+    }
 }
 
 void Shader::setBool(const std::string &name, bool value) const{
