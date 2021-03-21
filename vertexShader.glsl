@@ -20,6 +20,7 @@ out vec3 vPos;
 out vec3 vTang;
 out vec3 vBitang;
 out vec3 vNormal;
+out vec3 vPosition;
 
 //out vec3 ourColor;
 uniform sampler2D texture1;
@@ -50,6 +51,8 @@ void main(){
     vs_out.TangentLightPos = TBN * lightPos;
     vs_out.TangentViewPos  = TBN * viewPos;
     vs_out.TangentFragPos  = TBN * vec3(curV);
+
+    vPosition = vec3(aPos.x, 1.f, aPos.z);
     
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    // gl_Position = /*projection * view * model **/ vec4(aPos.x, 1.f, aPos.z, 1.0);
 }

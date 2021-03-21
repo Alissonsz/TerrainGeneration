@@ -12,7 +12,7 @@
 
 #define ClearOpenGLErrors() _check_gl_error(__FILE__,__LINE__)
 
-/*void ClearOpenGLErrors() {
+/*void // ClearOpenGLErrors() {
 	GLenum error = glGetError();
 
 	if(error != GL_NO_ERROR) {
@@ -83,7 +83,8 @@ int MapInRange(T x, I in_min, I in_max, O out_min, O out_max)
 bool sucessoo = Init();
 //Shader ourShader("shader.vs", "shader.fs");
 //Shader ourTessShader("vertexShader.glsl", "tcShader.glsl", "teShader.glsl", "fragShader.glsl");
- Shader ourTessShader("vertexShader.glsl", "fragShader.glsl");
+Shader ourTessShader("vertexShader.glsl", "test.tesc", "test.tese", "fragShader.glsl");
+//Shader ourTessShader("vertexShader.glsl", "fragShader.glsl");
 Shader our2Shader("shader2.vs", "shader2.fs");
 
 bool Init(){
@@ -317,43 +318,44 @@ void renderQuad() {
         };
         // configure plane VAO
         glGenVertexArrays(1, &quadVAO);
-				ClearOpenGLErrors();
+				// // ClearOpenGLErrors();
         glGenBuffers(1, &quadVBO);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glBindVertexArray(quadVAO);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glEnableVertexAttribArray(0);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)0);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glEnableVertexAttribArray(1);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(3 * sizeof(float)));
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glEnableVertexAttribArray(2);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(6 * sizeof(float)));
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glEnableVertexAttribArray(3);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(8 * sizeof(float)));
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glEnableVertexAttribArray(4);
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
         glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)(11 * sizeof(float)));
-				ClearOpenGLErrors();
+				// ClearOpenGLErrors();
     }
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
+		glPatchParameteri(GL_PATCH_VERTICES, 3);
     glBindVertexArray(quadVAO);
-		ClearOpenGLErrors();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
+    glDrawArrays(GL_PATCHES, 0, 6);
+		// ClearOpenGLErrors();
     glBindVertexArray(0);
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 }
 
 unsigned int createTerrain(const unsigned char* heightMap, int width){
@@ -748,12 +750,12 @@ int main(int argc, char* args[]){
 			VAO = createTerrain(data1, 1025);
 			vertchangedown = false;
 		}
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 		SDL_Event event;
 		float currentframe = (float)SDL_GetTicks()/100;
 		deltatime = currentframe - lastframe;
 		lastframe = currentframe;
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		glClearColor(0.2, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -764,13 +766,13 @@ int main(int argc, char* args[]){
         glBindTexture(GL_TEXTURE_2D, texture2);
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, normalTexture);
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		ourTessShader.use();
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 		glBindVertexArray(VAO);
 		glm::mat4 view;
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		view = camera.GetViewMatrix();
 		unsigned int viewLoc = glGetUniformLocation(ourTessShader.ID, "view");
@@ -780,36 +782,36 @@ int main(int argc, char* args[]){
 		glm::mat4 model = glm::mat4(1.0);
 		unsigned int modelLoc = glGetUniformLocation(ourTessShader.ID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		ourTessShader.setVec3("lightPos", lightPos);
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		ourTessShader.setVec3("viewPos", camera.Position);
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 
 		renderQuad();
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 		our2Shader.use();
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		glBindVertexArray(VAO2);
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		projectLoc = glGetUniformLocation(our2Shader.ID, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		viewLoc = glGetUniformLocation(our2Shader.ID, "view");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 		glm::mat4 model2 = glm::mat4(1.0);
 
 		modelLoc = glGetUniformLocation(our2Shader.ID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
-		ClearOpenGLErrors();
+		// ClearOpenGLErrors();
 
 
 		glDrawArrays(GL_LINES, 0, 12);
