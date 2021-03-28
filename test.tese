@@ -3,6 +3,9 @@
 // triangles, quads, or isolines
 layout (triangles, equal_spacing, ccw) in;
 in vec3 evaluationpoint_wor[];
+in vec2 tcTexCoord[];
+
+uniform sampler2D texture1;
 
 in TC_OUT
 {
@@ -20,6 +23,7 @@ out TE_OUT
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
+ 
 } te_out;
  
 // could use a displacement map here
@@ -42,13 +46,27 @@ void main () {
 	           	    + gl_TessCoord[1] * te_in[1].TexCoords
 	                + gl_TessCoord[2] * te_in[2].TexCoords;
 
-  te_out.TangentLightPos = lightPos;
-  te_out.TangentViewPos  = viewPos;
-  te_out.TangentFragPos  = te_out.FragPos;
+  te_out.TangentFragPos  = gl_TessCoord[0] * te_in[0].TangentFragPos
+                         + gl_TessCoord[1] * te_in[1].TangentFragPos
+                         + gl_TessCoord[2] * te_in[2].TangentFragPos;
+
+  te_out.TangentViewPos  = gl_TessCoord[0] * te_in[0].TangentViewPos
+                         + gl_TessCoord[1] * te_in[1].TangentViewPos
+                         + gl_TessCoord[2] * te_in[2].TangentViewPos;
+
+  te_out.TangentLightPos  = gl_TessCoord[0] * te_in[0].TangentLightPos
+                          + gl_TessCoord[1] * te_in[1].TangentLightPos
+                          + gl_TessCoord[2] * te_in[2].TangentLightPos;
+
+  vec2 t0 = gl_TessCoord.x * tcTexCoord[0];
+  vec2 t1 = gl_TessCoord.y * tcTexCoord[1];
+  vec2 t2 = gl_TessCoord.z * tcTexCoord[2];
+  vec2 f00TexCoord = (t0 + t1 + t2);
 
   vec3 p0 = gl_TessCoord.x * evaluationpoint_wor[0]; // x is one corner
   vec3 p1 = gl_TessCoord.y * evaluationpoint_wor[1]; // y is the 2nd corner
   vec3 p2 = gl_TessCoord.z * evaluationpoint_wor[2]; // z is the 3rd corner (ignore when using quads)
   vec3 pos = (p0 + p1 + p2);
-  gl_Position = projection * view * model * vec4 (pos, 1.0);
+
+  gl_Position = projection * view * model * vec4 (pos.x, pos.y, pos.z, 1.0);
 }

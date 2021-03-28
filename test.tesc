@@ -5,6 +5,7 @@ layout (vertices = 3) out;
 
 // from VS (use empty modifier [] so we can say anything)
 in vec3 vPosition[];
+in vec2 vTexCoord[];
 
 in VS_OUT {
     vec3 FragPos;
@@ -16,6 +17,7 @@ in VS_OUT {
 
 // to evluation shader. will be used to guide positioning of generated points
 out vec3 evaluationpoint_wor[];
+out vec2 tcTexCoord[];
 
 out TC_OUT
 {
@@ -35,6 +37,8 @@ void main () {
 	tc_out[gl_InvocationID].TangentLightPos = tc_in[gl_InvocationID].TangentLightPos;
 	tc_out[gl_InvocationID].TangentViewPos = tc_in[gl_InvocationID].TangentViewPos;
   tc_out[gl_InvocationID].TangentFragPos = tc_in[gl_InvocationID].TangentFragPos;
+
+  tcTexCoord[gl_InvocationID]  = vTexCoord[gl_InvocationID];
 
   evaluationpoint_wor[gl_InvocationID] = vPosition[gl_InvocationID];
  

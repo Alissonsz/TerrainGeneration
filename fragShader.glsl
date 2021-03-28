@@ -101,9 +101,6 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
     vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
 
     return finalTexCoords;
-
-
-
 }
 
 

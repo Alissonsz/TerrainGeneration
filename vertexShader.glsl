@@ -21,6 +21,7 @@ out vec3 vTang;
 out vec3 vBitang;
 out vec3 vNormal;
 out vec3 vPosition;
+out vec2 vTexCoord;
 
 //out vec3 ourColor;
 uniform sampler2D texture1;
@@ -36,8 +37,8 @@ void main(){
     curV = model * vec4(aPos, 1.0);
     
     float texX, texY;
-    texX = (curV.x + 15) / 30;
-    texY = (curV.z + 15) / 30;
+    texX = (curV.x + 30) / 60;
+    texY = (curV.z + 30) / 60;
 
     vs_out.FragPos = vec3(curV);
 
@@ -53,6 +54,7 @@ void main(){
     vs_out.TangentFragPos  = TBN * vec3(curV);
 
     vPosition = vec3(aPos.x, 1.f, aPos.z);
+    vTexCoord = vec2(texX, texY);
     
     // gl_Position = /*projection * view * model **/ vec4(aPos.x, 1.f, aPos.z, 1.0);
 }
