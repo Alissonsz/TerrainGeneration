@@ -19,6 +19,7 @@ in TE_OUT {
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
+    vec3 color;
 } te_out;
 /*in VS_OUT {
     vec3 FragPos;
@@ -141,5 +142,6 @@ void main() {
     vec3 ambient = ambientStrength * lightColor;
 
     vec4 result = vec4(ambient + diffuse + specular, 1.0);
+    //vec4 result = vec4(te_out.color, 1.0);
     FragColor = result;
 }

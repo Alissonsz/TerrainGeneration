@@ -23,7 +23,7 @@ out TE_OUT
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
- 
+    vec3 color;
 } te_out;
  
 // could use a displacement map here
@@ -68,5 +68,7 @@ void main () {
   vec3 p2 = gl_TessCoord.z * evaluationpoint_wor[2]; // z is the 3rd corner (ignore when using quads)
   vec3 pos = (p0 + p1 + p2);
 
-  gl_Position = projection * view * model * vec4 (pos.x, pos.y, pos.z, 1.0);
+  te_out.color = texture(texture1, f00TexCoord).rgb;
+
+  gl_Position = projection * view * model * vec4 (pos.x, te_out.color.r, pos.z, 1.0);
 }

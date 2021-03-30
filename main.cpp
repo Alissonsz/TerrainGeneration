@@ -14,11 +14,9 @@
 
 /*void // ClearOpenGLErrors() {
 	GLenum error = glGetError();
-
 	if(error != GL_NO_ERROR) {
 		std::cout << gluErrorString(error) << std::endl;
 	}
-
 }*/
 
 void _check_gl_error(const char *file, int line) {
