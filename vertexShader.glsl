@@ -29,6 +29,8 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform sampler2D normalTexture;
+
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
@@ -37,8 +39,8 @@ void main(){
     curV = model * vec4(aPos, 1.0);
     
     float texX, texY;
-    texX = (curV.x + 30) / 60;
-    texY = (curV.z + 30) / 60;
+    texX = (curV.x + 50) / 100;
+    texY = (curV.z + 50) / 100;
 
     vs_out.FragPos = vec3(curV);
 
@@ -56,5 +58,5 @@ void main(){
     vPosition = vec3(aPos.x, 1.f, aPos.z);
     vTexCoord = vec2(texX, texY);
     
-    // gl_Position = /*projection * view * model **/ vec4(aPos.x, 1.f, aPos.z, 1.0);
+    gl_Position = /*projection * view * model **/ vec4(aPos.x, 1.f, aPos.z, 1.0);
 }

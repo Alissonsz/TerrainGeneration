@@ -51,12 +51,14 @@ SDL_GLContext maincontext;
 float deltatime = 0.0f;
 float lastframe = 0.0f;
 bool running = true;
-glm::vec3 lightPos(10.0f, 10.0f, 10.0f);
+glm::vec3 lightPos(0.0f, 40.0f, 20.0f);
 Camera camera(glm::vec3(0.0, 20.0f, 30.0f));
 bool wireframe = false;
 int lastx = 1366/2, lasty = 768/2;
 bool firstmouse = true;
+bool useHeights = false;
 int BINARYITER = 5;
+const float TERRAIN_SIZE = 50.0f;
 
 void renderQuad();
 bool Init();
@@ -81,7 +83,7 @@ int MapInRange(T x, I in_min, I in_max, O out_min, O out_max)
 bool sucessoo = Init();
 //Shader ourShader("shader.vs", "shader.fs");
 //Shader ourTessShader("vertexShader.glsl", "tcShader.glsl", "teShader.glsl", "fragShader.glsl");
-Shader ourTessShader("vertexShader.glsl", "test.tesc", "test.tese", "fragShader.glsl");
+Shader ourTessShader("vertexShader.glsl", "test.tesc", "test.tese", "geometryShader.glsl", "fragShader.glsl");
 //Shader ourTessShader("vertexShader.glsl", "fragShader.glsl");
 Shader our2Shader("shader2.vs", "shader2.fs");
 
@@ -205,6 +207,16 @@ void InputProcess(SDL_Event event){
 	if(keyboardSnapshot[SDL_SCANCODE_S]) camera.ProcessKeyboard(BACKWARD, deltatime);
 	if(keyboardSnapshot[SDL_SCANCODE_D]) camera.ProcessKeyboard(RIGHT, deltatime);
 	if(keyboardSnapshot[SDL_SCANCODE_A]) camera.ProcessKeyboard(LEFT, deltatime);
+	if(keyboardSnapshot[SDL_SCANCODE_T]) {
+		ourTessShader.use();
+		useHeights = true;
+		ourTessShader.setBool("useHeights", useHeights);
+	}
+	if(keyboardSnapshot[SDL_SCANCODE_G]) {
+		ourTessShader.use();
+		useHeights = false;
+		ourTessShader.setBool("useHeights", useHeights);
+	}
 	if(keyboardSnapshot[SDL_SCANCODE_KP_PLUS]){
 		ourTessShader.use();
 		BINARYITER++;
@@ -249,10 +261,10 @@ void renderQuad() {
     if (quadVAO == 0)
     {
         // positions
-        glm::vec3 pos1(-30.0f,  0.0f, 30.0f);
-        glm::vec3 pos2(-30.0f, 0.0f, -30.0f);
-        glm::vec3 pos3( 30.0f, 0.0f, -30.0f);
-        glm::vec3 pos4( 30.0f,  0.0f, 30.0f);
+        glm::vec3 pos1(-TERRAIN_SIZE,  0.0f, TERRAIN_SIZE);
+        glm::vec3 pos2(-TERRAIN_SIZE, 0.0f, -TERRAIN_SIZE);
+        glm::vec3 pos3( TERRAIN_SIZE, 0.0f, -TERRAIN_SIZE);
+        glm::vec3 pos4( TERRAIN_SIZE,  0.0f, TERRAIN_SIZE);
         // texture coordinates
         glm::vec2 uv1(0.0f, 1.0f);
         glm::vec2 uv2(0.0f, 0.0f);
@@ -362,16 +374,16 @@ unsigned int createTerrain(const unsigned char* heightMap, int width){
 	int nVerticesX, nVerticesY;
 	nVerticesX = nVerticesY = VERTICES;
 
-	float curZ = +30.0;
+	float curZ = +TERRAIN_SIZE;
 	for(int i=0; i<nVerticesX; i++){
 
-		float curX = -30.0;
+		float curX = -TERRAIN_SIZE;
 
 		for(int j=0; j<nVerticesY; j++){
 
 
-			int heightMapX = MapInRange(curX, -30.0f, 30.8f, 0, 1024);
-			int heightMapZ = MapInRange(curZ, -30.0f, 30.8f, 0, 1024);
+			int heightMapX = MapInRange(curX, -TERRAIN_SIZE, TERRAIN_SIZE, 0, 1024);
+			int heightMapZ = MapInRange(curZ, -TERRAIN_SIZE, TERRAIN_SIZE, 0, 1024);
 			if(heightMapX > 1024){
 				std::cout<<"Out of range = "<<heightMapX<<" "<<curX<<std::endl;
 			}
@@ -450,16 +462,16 @@ unsigned int createTerrain(const unsigned char* heightMap, int width){
 void createNormalMap(const unsigned char* heightMap, int width){
 	int nVerticesX, nVerticesY;
 	nVerticesX = nVerticesY = 1025;
-	float curZ = +30.0;
+	float curZ = +TERRAIN_SIZE;
 	for(int i=0; i<nVerticesX; i++){
 
-		float curX = -30.0;
+		float curX = -TERRAIN_SIZE;
 
 		for(int j=0; j<nVerticesY; j++){
 
 
-			int heightMapX = MapInRange(curX, -30.0f, 30.0f, 0, 1024);
-			int heightMapZ = MapInRange(curZ, -30.0f, 30.0f, 0, 1024);
+			int heightMapX = MapInRange(curX, -TERRAIN_SIZE, TERRAIN_SIZE, 0, 1024);
+			int heightMapZ = MapInRange(curZ, -TERRAIN_SIZE, TERRAIN_SIZE, 0, 1024);
 			if(heightMapX > 1024){
 				std::cout<<"Out of range = "<<heightMapX<<" "<<curX<<std::endl;
 			}
@@ -655,7 +667,7 @@ int main(int argc, char* args[]){
 
     int width, height, nrChannels;
     //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    data1 = stbi_load("heightmap.jpg", &width, &height, &nrChannels, 0);
+    data1 = stbi_load("simpleheights.jpg", &width, &height, &nrChannels, 0);
 
     if (data1 != NULL){
     	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -728,7 +740,7 @@ int main(int argc, char* args[]){
 
 
 	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), (float)800/(float)600, 0.1f, 200.0f);
+	projection = glm::perspective(glm::radians(45.0f), (float)800/(float)600, 0.1f, 400.0f);
 	unsigned int projectLoc = glGetUniformLocation(ourTessShader.ID, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, glm::value_ptr(projection));
 

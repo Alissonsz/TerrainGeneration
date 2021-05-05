@@ -39,14 +39,14 @@ uniform float tessLevelOuter = 4.0; // controlled by keyboard buttons
 float LOD(vec3 posV, vec3 cam){
   float dist = distance(posV, cam);
  
-  if(dist<=25) return 64.0;
-  else if(dist>25 && dist<=50) return 32.0;
-  else if(dist>50 && dist<=75) return 16.0;
-  else if(dist>75 && dist<=100) return 12.0;
-  else if(dist>100 && dist<=150) return 8.0;
-  else if(dist>150 && dist<=200) return 6.0;
-  else if(dist>200 && dist<=300) return 4.0;
-  else if(dist>300 && dist<=400) return 2.0;
+  if(dist<=25) return 128.0;
+  else if(dist>25 && dist<=50) return 64.0;
+  else if(dist>50 && dist<=75) return 32.0;
+  else if(dist>75 && dist<=100) return 16.0;
+  else if(dist>100 && dist<=150) return 12.0;
+  else if(dist>150 && dist<=200) return 8.0;
+  else if(dist>200 && dist<=300) return 6.0;
+  else if(dist>300 && dist<=400) return 4.0;
   else if(dist>400) return 1.0;
   
 }
@@ -69,11 +69,11 @@ void main () {
   e0 = e1 = e2 = 1;
 
   if (gl_InvocationID == 0) {
-    vec3 v0 = vPosition[gl_InvocationID].xyz;
-    vec3 v1 = vPosition[gl_InvocationID].xyz;
-    vec3 v2 = vPosition[gl_InvocationID].xyz;
+    vec3 v0 = gl_in[0].gl_Position.xyz;
+    vec3 v1 = gl_in[1].gl_Position.xyz;
+    vec3 v2 = gl_in[2].gl_Position.xyz;
 
-    vec3 bTriangulo = (vPosition[gl_InvocationID].xyz + vPosition[gl_InvocationID].xyz + vPosition[gl_InvocationID].xyz)/3;
+    vec3 bTriangulo = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz)/3;
     TessLevelInner = LOD(bTriangulo, viewPos);
 
     d0=v1+(v2-v1)/2;

@@ -8,18 +8,22 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform int parFlag = 0;
 uniform int binaryIter = 5;
+uniform mat4 model;
 
 /*in vec2 texCord;
 in vec3 Normal;
 in vec3 FragPos;*/
 
-in TE_OUT {
+in GS_OUT {
     vec3 FragPos;
     vec2 TexCoords;
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
-    vec3 color;
+    vec3 normal;
+    vec3 T;
+    vec3 B;
+    vec3 N;
 } te_out;
 /*in VS_OUT {
     vec3 FragPos;
@@ -74,7 +78,7 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
 
     // get initial values
     vec2  currentTexCoords     = texCoords ;
-    float currentDepthMapValue = 1 - texture(texture1, currentTexCoords).r;
+    float currentDepthMapValue = (1 - texture(texture1, currentTexCoords).r) /2;
     vec2 finalCoords;
 
     while(currentLayerDepth < currentDepthMapValue)
@@ -121,10 +125,10 @@ void main() {
        discard;
 
 
-    newNormal = texture(normalTexture, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
-    newNormal = normalize(newNormal * 2.0 - 1.0);
+    newNormal = 2 * texture(normalTexture, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb -1.0;
+    newNormal = normalize(newNormal);
 
-    vec3 norm = newNormal;
+    vec3 norm = normalize(te_out.normal);
     vec3 lightColor = texture(texture2, vec2(texCoords)).rgb;
 
     vec3 lightDir = normalize(te_out.TangentLightPos - te_out.TangentFragPos);
@@ -141,7 +145,9 @@ void main() {
     float ambientStrength = 0.05;
     vec3 ambient = ambientStrength * lightColor;
 
-    vec4 result = vec4(ambient + diffuse + specular, 1.0);
-    //vec4 result = vec4(te_out.color, 1.0);
+    vec4 result = vec4(specular + diffuse + ambient, 1.0);
+    //vec4 result = vec4(((te_out.TangentFragPos + 50) / 100).xyz, 1.0);
+    //vec4 result = vec4(normalize(te_out.N), 1.0);
+    //vec4 result = vec4(te_out.TexCoords.x, 0.0, te_out.TexCoords.y, 1.0);
     FragColor = result;
 }

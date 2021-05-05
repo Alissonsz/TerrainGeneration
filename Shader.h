@@ -19,7 +19,7 @@ public:
 	unsigned int ID;
 
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
-  Shader(const GLchar* vertexPath, const GLchar* tessControlPath, const GLchar* tessEvalPath, const GLchar* fragmentPath);
+  Shader(const GLchar* vertexPath, const GLchar* tessControlPath, const GLchar* tessEvalPath, const GLchar* geometryPath, const GLchar* fragmentPath);
 
 	void use();
 
