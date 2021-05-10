@@ -21,6 +21,7 @@ in GS_OUT {
     vec3 TangentViewPos;
     vec3 TangentFragPos;
     vec3 normal;
+    float hBase;
     vec3 T;
     vec3 B;
     vec3 N;
@@ -78,7 +79,7 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
 
     // get initial values
     vec2  currentTexCoords     = texCoords ;
-    float currentDepthMapValue = (1 - texture(texture1, currentTexCoords).r) /2;
+    float currentDepthMapValue = (1 - (texture(texture1, currentTexCoords).r - te_out.hBase)) /2;
     vec2 finalCoords;
 
     while(currentLayerDepth < currentDepthMapValue)
@@ -88,7 +89,7 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
 
         // get depthmap value at current texture coordinates
 
-        currentDepthMapValue = 1 - texture(texture1, currentTexCoords).r;
+        currentDepthMapValue = 1 - (texture(texture1, currentTexCoords).r - te_out.hBase);
 
         // get depth of next layer
         currentLayerDepth += layerDepth;
@@ -99,7 +100,7 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
 
     // get depth after and before collision for linear interpolation
     float afterDepth  = currentDepthMapValue - currentLayerDepth;
-    float beforeDepth = (1 - texture(texture1, prevTexCoords).r) - currentLayerDepth + layerDepth;
+    float beforeDepth = (1 - (texture(texture1, prevTexCoords).r) - te_out.hBase) - currentLayerDepth + layerDepth;
 
     // interpolation of texture coordinates
     float weight = afterDepth / (afterDepth - beforeDepth);

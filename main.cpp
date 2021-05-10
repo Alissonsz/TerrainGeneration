@@ -667,7 +667,7 @@ int main(int argc, char* args[]){
 
     int width, height, nrChannels;
     //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    data1 = stbi_load("simpleheights.jpg", &width, &height, &nrChannels, 0);
+    data1 = stbi_load("heightmap.jpg", &width, &height, &nrChannels, 0);
 
     if (data1 != NULL){
     	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

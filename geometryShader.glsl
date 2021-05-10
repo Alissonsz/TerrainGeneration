@@ -31,6 +31,7 @@ out GS_OUT {
   vec3 TangentViewPos;
   vec3 TangentFragPos;
   vec3 normal;
+  float hBase;
   vec3 T;
   vec3 B;
   vec3 N;
@@ -66,6 +67,7 @@ void main( void ) {
     for( int i=0; i < gl_in.length( ); i++ )
     {
         gs_out.TexCoords = gs_in[i].TexCoords;
+        gs_out.hBase = gl_in[i].gl_Position.y / 10;
         gs_out.normal = normalize(normal);
         gs_out.T = tang;
         gs_out.B = bitang;
