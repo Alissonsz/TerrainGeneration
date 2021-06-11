@@ -35,29 +35,35 @@ in GS_OUT {
 } te_out;*/
 
 vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
-    vec2 P = viewDir.xy * 0.3;
+    int SCALE = 5;
+    float incUV = 0.3;
+    vec3 v = normalize(viewDir);
 
-    vec2 prevCoords = texCoords;
-    texCoords = texCoords + P;
-    P = prevCoords;
+	vec3 STH1 = vec3( texCoords, te_out.hBase * SCALE) + incUV * v.xzy;
+	float d1 = -incUV * v.y;
+	
+	vec3 STH2 = vec3( texCoords, te_out.hBase * SCALE) - incUV * v.xzy;
+	float d2 = incUV * v.y;
 
-    vec2 uvin = texCoords;
-    vec2 uvout = P;
+	vec3 STHm;
+	float h;
 
-    vec2 currentCoords;
-    float Hmax = 1.0f;
-    float Hmin = 0.0f;
+	for (int i = 0; i < binaryIter; i ++) {
+		STHm = (STH1 + STH2) * 0.5;
 
-    for(int i=0; i<binaryIter; i++){
-        float H = (Hmin + Hmax)/2; // middle
-        currentCoords = uvin * H + uvout * (1 - H);
-        float h = texture(texture1, currentCoords).r;
+		h = texture(texture1, STHm.st).r * SCALE;
 
-        if(H <= h) Hmin = H;
-        else Hmax = H;
-    }
-
-    return currentCoords;
+		if ( h < STHm.z ) {
+			d1 = h - STHm.z;
+			STH1 = STHm;
+		} else {
+			d2 = h - STHm.z;
+			STH2 = STHm;
+		} 
+	}
+	
+	STHm = STH2 + (STH1 - STH2) * d2 / (d2 - d1);
+    return STHm.st;
 }
 
 vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
@@ -78,7 +84,7 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
     P = prevCoords;
 
     // get initial values
-    vec2  currentTexCoords     = texCoords ;
+    vec2  currentTexCoords     = texCoords;
     float currentDepthMapValue = (1 - (texture(texture1, currentTexCoords).r - te_out.hBase)) /2;
     vec2 finalCoords;
 
@@ -88,7 +94,6 @@ vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
         currentTexCoords -= deltaTexCoords;
 
         // get depthmap value at current texture coordinates
-
         currentDepthMapValue = 1 - (texture(texture1, currentTexCoords).r - te_out.hBase);
 
         // get depth of next layer
@@ -148,7 +153,7 @@ void main() {
 
     vec4 result = vec4(specular + diffuse + ambient, 1.0);
     //vec4 result = vec4(((te_out.TangentFragPos + 50) / 100).xyz, 1.0);
-    //vec4 result = vec4(normalize(te_out.N), 1.0);
+    //vec4 result = vec4(normalize(viewDir), 1.0);
     //vec4 result = vec4(te_out.TexCoords.x, 0.0, te_out.TexCoords.y, 1.0);
     FragColor = result;
 }

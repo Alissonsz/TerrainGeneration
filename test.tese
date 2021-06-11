@@ -88,7 +88,7 @@ void main () {
   vec3 pos = (p0 + p1 + p2);
 
   if (useHeights) {
-    gl_Position = vec4(pos.x, texture(texture1, te_out.TexCoords).r * 10, pos.z, 1.0);
+    gl_Position = vec4(pos.x, texture(texture1, te_out.TexCoords).r * 5, pos.z, 1.0);
   } else {
     gl_Position = vec4(pos.x, 0.0, pos.z, 1.0);
   }

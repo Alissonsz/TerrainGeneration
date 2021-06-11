@@ -80,6 +80,7 @@ void main( void ) {
         gs_out.TangentFragPos  = TBN * fragPos;
         gs_out.TangentLightPos = TBN * lightPos;
         gs_out.TangentViewPos  = TBN * viewPos;
+        gs_out.FragPos = fragPos;
 
         EmitVertex();
     }
