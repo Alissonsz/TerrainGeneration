@@ -23,7 +23,10 @@ out TE_OUT
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
+    float incUV;
 } te_out;
+
+out float incUV;
  
 // could use a displacement map here
 
@@ -68,10 +71,7 @@ float fbm( vec3 p ){
 
     return f/0.9375;
 }
- 
-// gl_TessCoord is location within the patch
-// (barycentric for triangles, UV for quads)
- 
+
 void main () {
   te_out.FragPos   = gl_TessCoord[0] * te_in[0].FragPos
                    + gl_TessCoord[1] * te_in[1].FragPos
@@ -86,6 +86,7 @@ void main () {
   vec3 p1 = gl_TessCoord.y * evaluationpoint_wor[1]; // y is the 2nd corner
   vec3 p2 = gl_TessCoord.z * evaluationpoint_wor[2]; // z is the 3rd corner (ignore when using quads)
   vec3 pos = (p0 + p1 + p2);
+  te_out.incUV = 1.0 / (gl_TessLevelInner[0] * (16 + 1));
 
   if (useHeights) {
     gl_Position = vec4(pos.x, texture(texture1, te_out.TexCoords).r * 5, pos.z, 1.0);

@@ -22,6 +22,7 @@ in TE_OUT {
   vec3 TangentLightPos;
   vec3 TangentViewPos;
   vec3 TangentFragPos;
+  float incUV;
 } gs_in[];
 
 out GS_OUT {
@@ -35,6 +36,7 @@ out GS_OUT {
   vec3 T;
   vec3 B;
   vec3 N;
+  float incUV;
 } gs_out;
 
 void main( void ) {
@@ -67,7 +69,7 @@ void main( void ) {
     for( int i=0; i < gl_in.length( ); i++ )
     {
         gs_out.TexCoords = gs_in[i].TexCoords;
-        gs_out.hBase = gl_in[i].gl_Position.y / 10;
+        gs_out.hBase = gl_in[i].gl_Position.y / 5;
         gs_out.normal = normalize(normal);
         gs_out.T = tang;
         gs_out.B = bitang;
@@ -80,6 +82,7 @@ void main( void ) {
         gs_out.TangentFragPos  = TBN * fragPos;
         gs_out.TangentLightPos = TBN * lightPos;
         gs_out.TangentViewPos  = TBN * viewPos;
+        gs_out.incUV = gs_in[i].incUV;
         gs_out.FragPos = fragPos;
 
         EmitVertex();

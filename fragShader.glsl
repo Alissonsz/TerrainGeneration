@@ -25,6 +25,7 @@ in GS_OUT {
     vec3 T;
     vec3 B;
     vec3 N;
+    float incUV;
 } te_out;
 /*in VS_OUT {
     vec3 FragPos;
@@ -35,14 +36,14 @@ in GS_OUT {
 } te_out;*/
 
 vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
-    int SCALE = 5;
-    float incUV = 0.3;
-    vec3 v = normalize(viewDir);
+    vec3 v = viewDir;
+    float incUV = te_out.incUV;
+    float scale = 5;
 
-	vec3 STH1 = vec3( texCoords, te_out.hBase * SCALE) + incUV * v.xzy;
+	vec3 STH1 = vec3( texCoords, te_out.hBase * scale) + incUV * v.xzy;
 	float d1 = -incUV * v.y;
-	
-	vec3 STH2 = vec3( texCoords, te_out.hBase * SCALE) - incUV * v.xzy;
+
+	vec3 STH2 = vec3( texCoords, te_out.hBase * scale) - incUV * v.xzy;
 	float d2 = incUV * v.y;
 
 	vec3 STHm;
@@ -51,8 +52,9 @@ vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
 	for (int i = 0; i < binaryIter; i ++) {
 		STHm = (STH1 + STH2) * 0.5;
 
-		h = texture(texture1, STHm.st).r * SCALE;
+		h = texture(texture1, STHm.st).r * scale;
 
+	
 		if ( h < STHm.z ) {
 			d1 = h - STHm.z;
 			STH1 = STHm;
@@ -61,9 +63,9 @@ vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
 			STH2 = STHm;
 		} 
 	}
-	
+    
 	STHm = STH2 + (STH1 - STH2) * d2 / (d2 - d1);
-    return STHm.st;
+	return STHm.st;
 }
 
 vec2 parallaxMapping(vec2 texCoords, vec3 viewDir){
