@@ -86,10 +86,11 @@ void main () {
   vec3 p1 = gl_TessCoord.y * evaluationpoint_wor[1]; // y is the 2nd corner
   vec3 p2 = gl_TessCoord.z * evaluationpoint_wor[2]; // z is the 3rd corner (ignore when using quads)
   vec3 pos = (p0 + p1 + p2);
-  te_out.incUV = 1.0 / (gl_TessLevelInner[0] * (16 + 1));
+  
+  te_out.incUV = 1 / (gl_TessLevelInner[0] * (16 + 1));
 
   if (useHeights) {
-    gl_Position = vec4(pos.x, texture(texture1, te_out.TexCoords).r * 5, pos.z, 1.0);
+    gl_Position = vec4(pos.x, texture(texture1, te_out.TexCoords).r * 10, pos.z, 1.0);
   } else {
     gl_Position = vec4(pos.x, 0.0, pos.z, 1.0);
   }

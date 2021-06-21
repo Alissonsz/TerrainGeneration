@@ -38,7 +38,7 @@ in GS_OUT {
 vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
     vec3 v = viewDir;
     float incUV = te_out.incUV;
-    float scale = 5;
+    float scale = 10;
 
 	vec3 STH1 = vec3( texCoords, te_out.hBase * scale) + incUV * v.xzy;
 	float d1 = -incUV * v.y;

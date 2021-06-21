@@ -35,10 +35,13 @@ out TC_OUT
  
 uniform float tessLevelInner = 4.0; // controlled by keyboard buttons
 uniform float tessLevelOuter = 4.0; // controlled by keyboard buttons
+const float levelOfDetail = 128;
+const float maxLodDistance = 15;
+const float k = levelOfDetail * maxLodDistance;
 
 float LOD(vec3 posV, vec3 cam){
   float dist = distance(posV, cam);
- 
+  /*return 16.0;
   if(dist<=25) return 64.0;
   else if(dist>25 && dist<=50) return 32.0;
   else if(dist>50 && dist<=75) return 16.0;
@@ -47,7 +50,10 @@ float LOD(vec3 posV, vec3 cam){
   else if(dist>150 && dist<=200) return 6.0;
   else if(dist>200 && dist<=300) return 6.0;
   else if(dist>300 && dist<=400) return 2.0;
-  else if(dist>400) return 1.0;
+  else if(dist>400) return 1.0;*/
+
+  int n = int(log2(clamp(k / dist, 1, levelOfDetail)));
+	return float(1<<n);
   
 }
  
