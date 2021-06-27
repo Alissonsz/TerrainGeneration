@@ -40,11 +40,11 @@ vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
     float incUV = te_out.incUV;
     float scale = 10;
 
-	vec3 STH1 = vec3( texCoords, te_out.hBase * scale) + incUV * v.xzy;
-	float d1 = -incUV * v.y;
+	vec3 STH1 = vec3(texCoords, te_out.hBase * scale) + incUV * v.xzy;
+	float d1;
 
-	vec3 STH2 = vec3( texCoords, te_out.hBase * scale) - incUV * v.xzy;
-	float d2 = incUV * v.y;
+	vec3 STH2 = vec3(texCoords, te_out.hBase * scale) - incUV * v.xzy;
+	float d2;
 
 	vec3 STHm;
 	float h;
@@ -53,7 +53,6 @@ vec2 parallaxBinarySearch(vec2 texCoords, vec3 viewDir){
 		STHm = (STH1 + STH2) * 0.5;
 
 		h = texture(texture1, STHm.st).r * scale;
-
 	
 		if ( h < STHm.z ) {
 			d1 = h - STHm.z;
@@ -133,13 +132,17 @@ void main() {
        discard;
 
 
-    newNormal = 2 * texture(normalTexture, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb -1.0;
-    newNormal = normalize(newNormal);
+    // newNormal = 2 * texture(normalTexture, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb -1.0;
+    // newNormal = normalize(newNormal);
 
-    vec3 norm = normalize(te_out.normal);
+    newNormal = texture(normalTexture, vec2(texCoords.x, 0 + (1 - texCoords.y))).rgb;
+    newNormal = normalize(newNormal * 2.0 - 1.0);
+
+    //vec3 norm = normalize(te_out.normal);
+    vec3 norm = newNormal;
     vec3 lightColor = texture(texture2, vec2(texCoords)).rgb;
 
-    vec3 lightDir = normalize(te_out.TangentLightPos - te_out.TangentFragPos);
+    vec3 lightDir = normalize(lightPos - te_out.FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
@@ -155,7 +158,7 @@ void main() {
 
     vec4 result = vec4(specular + diffuse + ambient, 1.0);
     //vec4 result = vec4(((te_out.TangentFragPos + 50) / 100).xyz, 1.0);
-    //vec4 result = vec4(normalize(viewDir), 1.0);
+    //vec4 result = vec4(newNormal, 1.0);
     //vec4 result = vec4(te_out.TexCoords.x, 0.0, te_out.TexCoords.y, 1.0);
     FragColor = result;
 }

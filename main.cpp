@@ -51,14 +51,14 @@ SDL_GLContext maincontext;
 float deltatime = 0.0f;
 float lastframe = 0.0f;
 bool running = true;
-glm::vec3 lightPos(0.0f, 40.0f, 20.0f);
+glm::vec3 lightPos(0.0f, 40.0f, 0.0f);
 Camera camera(glm::vec3(0.0, 20.0f, 30.0f));
 bool wireframe = false;
 int lastx = 1366/2, lasty = 768/2;
 bool firstmouse = true;
 bool useHeights = false;
 int BINARYITER = 5;
-const float TERRAIN_SIZE = 50.0f;
+const float TERRAIN_SIZE = 60.0f;
 
 void renderQuad();
 bool Init();
@@ -483,9 +483,9 @@ void createNormalMap(const unsigned char* heightMap, int width){
 			vert.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
 
 
-			curX+=29.8 / nVerticesX;
+			curX+=(TERRAIN_SIZE * 2) / nVerticesX;
 		}
-		curZ-=29.8/nVerticesY;
+		curZ-=(TERRAIN_SIZE * 2) /nVerticesY;
 	}
 	std::cout<<"Create vertices"<<std::endl;
 

@@ -39,8 +39,8 @@ void main(){
     curV = model * vec4(aPos, 1.0);
     
     float texX, texY;
-    texX = (curV.x + 50) / 100;
-    texY = (curV.z + 50) / 100;
+    texX = (curV.x + 30) / 60;
+    texY = (curV.z + 30) / 60;
 
     vs_out.FragPos = vec3(curV);
 
